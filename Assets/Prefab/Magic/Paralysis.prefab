@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attack: 10
-  speed: -6
+  speed: 6
   disappearTime: 0.7
 --- !u!95 &6669151886844081587
 Animator:
