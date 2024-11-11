@@ -184,5 +184,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attack: 30
-  speed: -7
+  speed: 7
   disappearTime: 0.9
