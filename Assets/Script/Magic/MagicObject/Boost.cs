@@ -30,7 +30,7 @@ public class Boost : MagicObject
         {
             AudioManager.Instance.PlaySE(AudioType.boost_up);
             int num;
-            Debug.Log(player.magics[0].gameObject.name);
+            
             if (player.magics[0].gameObject.name == "BoostMagic")
                 num = 1;
             else
