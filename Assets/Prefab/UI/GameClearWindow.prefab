@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 7831162398017396740}
   - component: {fileID: 1437085748314363388}
   - component: {fileID: 5162864053808663664}
-  - component: {fileID: 5634434797670049445}
+  - component: {fileID: 6437630787085625430}
   m_Layer: 5
   m_Name: ScoreText
   m_TagString: Untagged
@@ -384,7 +384,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &5634434797670049445
+--- !u!114 &6437630787085625430
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -393,10 +393,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 9145597037241307436}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fba6c045ee7f28499da611a361cb13d, type: 3}
+  m_Script: {fileID: 11500000, guid: 8cd8e06badd0ffb468e6abb9e8968abe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ui: {fileID: 0}
+  score: {fileID: 0}
 --- !u!1001 &562257840747911119
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -488,6 +488,18 @@ PrefabInstance:
     - target: {fileID: 4580272514504551301, guid: db44eb75d47a2fc4f801218ecba413df, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5868925557304292188, guid: db44eb75d47a2fc4f801218ecba413df, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5868925557304292188, guid: db44eb75d47a2fc4f801218ecba413df, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.g
+      value: 0.49803922
+      objectReference: {fileID: 0}
+    - target: {fileID: 5868925557304292188, guid: db44eb75d47a2fc4f801218ecba413df, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6551280577309378744, guid: db44eb75d47a2fc4f801218ecba413df, type: 3}
       propertyPath: m_Name
@@ -642,6 +654,30 @@ PrefabInstance:
     - target: {fileID: 6607855939914204049, guid: 0082294d2ba91ec4c8c0b4f554699a8d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6622939788639682197, guid: 0082294d2ba91ec4c8c0b4f554699a8d, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6622939788639682197, guid: 0082294d2ba91ec4c8c0b4f554699a8d, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6622939788639682197, guid: 0082294d2ba91ec4c8c0b4f554699a8d, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7226064646586203317, guid: 0082294d2ba91ec4c8c0b4f554699a8d, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7226064646586203317, guid: 0082294d2ba91ec4c8c0b4f554699a8d, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.g
+      value: 0.49803922
+      objectReference: {fileID: 0}
+    - target: {fileID: 7226064646586203317, guid: 0082294d2ba91ec4c8c0b4f554699a8d, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

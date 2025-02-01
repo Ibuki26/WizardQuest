@@ -10,7 +10,7 @@
                     "type": "Value",
                     "id": "dacd9e8c-5685-4a61-b1d9-ea9e94cdebdf",
                     "expectedControlType": "Stick",
-                    "processors": "",
+                    "processors": "StickDeadzone(min=0.5)",
                     "interactions": "",
                     "initialStateCheck": true
                 },
@@ -295,7 +295,7 @@
             ]
         },
         {
-            "name": "UI",
+            "name": "MyUIMap",
             "id": "9f1cbe66-a2c2-403f-9a61-33075f24aaf7",
             "actions": [
                 {
@@ -303,18 +303,9 @@
                     "type": "Value",
                     "id": "dcbdd576-bb49-454b-aaf2-2cf42f948158",
                     "expectedControlType": "Stick",
-                    "processors": "",
+                    "processors": "NormalizeVector2",
                     "interactions": "",
                     "initialStateCheck": true
-                },
-                {
-                    "name": "Decision",
-                    "type": "Button",
-                    "id": "095b007e-d690-4eef-9ced-0adbc89ba8cb",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 },
                 {
                     "name": "Open",
@@ -331,22 +322,29 @@
                     "id": "23b4c79c-d248-4d04-b51a-4036eb264063",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Decision",
+                    "type": "Button",
+                    "id": "e9571200-857a-426e-a3f5-bcc7e2d93fb7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Switch",
+                    "type": "Button",
+                    "id": "f2245a35-c444-4446-ade1-1071697001e1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
                     "initialStateCheck": false
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "d97b505d-8ec0-4774-9ccd-63d23b1827c6",
-                    "path": "<HID::SZMY-POWER CO.,LTD. EX10 GAMEPAD>/stick",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Cursor",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "2D Vector",
                     "id": "dfe5346b-ad16-4856-9eb3-4419daa961e0",
@@ -405,7 +403,7 @@
                 {
                     "name": "",
                     "id": "501df46f-a0a7-4a2f-9ab7-2395a6d702eb",
-                    "path": "<Gamepad>/rightStick",
+                    "path": "<Gamepad>/leftStick",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -415,30 +413,8 @@
                 },
                 {
                     "name": "",
-                    "id": "7e25dcc8-5ca4-4f6b-87ee-a03f00bc1dcb",
-                    "path": "<HID::SZMY-POWER CO.,LTD. EX10 GAMEPAD>/button3",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Decision",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "05ecc1f0-b23c-4f6b-9b5a-285a95cd98ae",
-                    "path": "<Gamepad>/buttonEast",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Decision",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "df4bf1bb-8c1d-4c42-a0a4-ca5630adf6d5",
-                    "path": "<HID::SZMY-POWER CO.,LTD. EX10 GAMEPAD>/button6",
+                    "path": "<Touchscreen>/primaryTouch/indirectTouch",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -449,7 +425,7 @@
                 {
                     "name": "",
                     "id": "0cc63d44-14a6-47e7-a8c9-5edf7fb0444f",
-                    "path": "<Gamepad>/rightShoulder",
+                    "path": "<Gamepad>/start",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -460,7 +436,7 @@
                 {
                     "name": "",
                     "id": "150a7da3-4cb4-4010-9908-d52ef7322d8b",
-                    "path": "<HID::SZMY-POWER CO.,LTD. EX10 GAMEPAD>/button2",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -476,6 +452,50 @@
                     "processors": "",
                     "groups": "",
                     "action": "Back",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b0acf8b7-20d5-42f8-9119-b57cf544bcfa",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Decision",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2a63ad93-5421-4dd9-ab3c-64dad12cf1b4",
+                    "path": "<Keyboard>/j",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Decision",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f15877a1-bb7b-413c-9415-dc4ef06b1fc4",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Switch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "53a9e249-8aba-427f-b994-06356f6c97a5",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Switch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

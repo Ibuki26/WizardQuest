@@ -3,29 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System;
+using WizardEnemy;
 
 namespace WizardMagic
 {
-    public class RapidShot : Magic
+    public class RapidShot : ShotMagic
     {
         private Rigidbody2D rb;
 
-        protected override async void Action(float speed, float disappearTime)
+        protected override async void Action(float speed, float destroyTime)
         {
+            //ë¨ìxÇÃê›íË
             rb = GetComponent<Rigidbody2D>();
             rb.velocity = new Vector2(speed, 0);
-            await UniTask.Delay(TimeSpan.FromSeconds(disappearTime));
-            Destroy(gameObject);
+            var token = this.GetCancellationTokenOnDestroy();
+            //éwíËéûä‘Ç™åoÇ¡ÇΩÇÁDestroy
+            try
+            {
+                await UniTask.Delay(TimeSpan.FromSeconds(destroyTime), cancellationToken: token);
+                Destroy(gameObject);
+            }
+            catch
+            {
+
+            }
         }
 
-        protected override void Effect(Enemy enemy)
+        public override void Effect(EnemyPresenter enemy)
         {
+            //ìGÇ…ìñÇΩÇ¡ÇΩÇÁñ≥Ç≠Ç»ÇÈ
             Destroy(gameObject, 0.1f);
-        }
-
-        protected override void Buff(Player player)
-        {
-            return;
         }
     }
 }
