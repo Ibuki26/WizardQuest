@@ -441,7 +441,7 @@ GameObject:
   - component: {fileID: 770981477}
   - component: {fileID: 770981480}
   - component: {fileID: 770981479}
-  - component: {fileID: 770981478}
+  - component: {fileID: 770981481}
   m_Layer: 5
   m_Name: AnnouncementText
   m_TagString: Untagged
@@ -466,20 +466,8 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -150}
-  m_SizeDelta: {x: 400, y: 50}
+  m_SizeDelta: {x: 500, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &770981478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 770981476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f68d371c3832db4f982dff1f05e956c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &770981479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -500,7 +488,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u30DC\u30BF\u30F3\u3092\u62BC\u3057\u3066\u304F\u3060\u3055\u3044"
+  m_text: "\u30D0\u30C4\u30DC\u30BF\u30F3\u304B\u30B9\u30DA\u30FC\u30B9\u30AD\u30FC\u3092\u62BC\u3057\u3066\u304F\u3060\u3055\u3044"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6d95ae9d4b43eea40801999152ac407b, type: 2}
   m_sharedMaterial: {fileID: -2836530788761875319, guid: 6d95ae9d4b43eea40801999152ac407b, type: 2}
@@ -577,6 +565,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 770981476}
   m_CullTransparentMesh: 1
+--- !u!114 &770981481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 770981476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 420e5043d0ea19842bca51071e33a64b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &898384771
 GameObject:
   m_ObjectHideFlags: 0
@@ -1006,31 +1006,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d331b52034867e44f96d5026117af7e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  action:
-    m_Name: Action
-    m_Type: 1
-    m_ExpectedControlType: Button
-    m_Id: 01fc380d-08ea-4275-9d21-8213b88cd930
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 3672dce6-18c4-4480-ba6f-8386e060d98b
-      m_Path: <Gamepad>/<Button>
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action
-      m_Flags: 0
-    - m_Name: 
-      m_Id: d0dc2df1-dbca-4d9f-8a79-7388ad65194b
-      m_Path: <HID::SZMY-POWER CO.,LTD. EX10 GAMEPAD>/button3
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action
-      m_Flags: 0
-    m_Flags: 0
+  actionRef: {fileID: 5207923223401557040, guid: 0e17c2d0e82ae8f43a866cff8691a531, type: 3}
 --- !u!4 &1733389750
 Transform:
   m_ObjectHideFlags: 0
@@ -1083,7 +1059,7 @@ MonoBehaviour:
   m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_SubmitAction: {fileID: 0}
   m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_LeftClickAction: {fileID: 3001919216989983466, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_MiddleClickAction: {fileID: -2185481485913320682, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}

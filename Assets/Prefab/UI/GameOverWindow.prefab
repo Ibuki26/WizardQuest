@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5091218251934722650}
   - component: {fileID: 6875830186429290265}
   - component: {fileID: 1007287115578240660}
-  - component: {fileID: 2793945126203625387}
+  - component: {fileID: 5789299032121507346}
   m_Layer: 5
   m_Name: ScoreText
   m_TagString: Untagged
@@ -135,7 +135,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &2793945126203625387
+--- !u!114 &5789299032121507346
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -144,10 +144,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1575097524054639464}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fba6c045ee7f28499da611a361cb13d, type: 3}
+  m_Script: {fileID: 11500000, guid: 8cd8e06badd0ffb468e6abb9e8968abe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ui: {fileID: 0}
+  score: {fileID: 0}
 --- !u!1 &5014960517058214922
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,6 +291,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5279148922422806855}
+  - component: {fileID: 1997993227065649161}
+  - component: {fileID: 797203591659034622}
   m_Layer: 5
   m_Name: GameOverWindow
   m_TagString: Untagged
@@ -322,6 +324,36 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 880, y: 550}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1997993227065649161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6207650653889784898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2579d9b1dec1e254e8468f04d7f0c354, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  array: {fileID: 797203591659034622}
+  actionRef: {fileID: -1574837692671693998, guid: 0e17c2d0e82ae8f43a866cff8691a531, type: 3}
+  actionRef2: {fileID: 6319529546141582885, guid: 0e17c2d0e82ae8f43a866cff8691a531, type: 3}
+--- !u!114 &797203591659034622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6207650653889784898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d85381ca680b343429ad826bd56bad9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttons:
+  - {fileID: 3269101421177216693}
+  - {fileID: 4425083209184601015}
 --- !u!1 &7723388051268775384
 GameObject:
   m_ObjectHideFlags: 0
@@ -489,6 +521,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5868925557304292188, guid: db44eb75d47a2fc4f801218ecba413df, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5868925557304292188, guid: db44eb75d47a2fc4f801218ecba413df, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.g
+      value: 0.49803922
+      objectReference: {fileID: 0}
+    - target: {fileID: 5868925557304292188, guid: db44eb75d47a2fc4f801218ecba413df, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6551280577309378744, guid: db44eb75d47a2fc4f801218ecba413df, type: 3}
       propertyPath: m_Name
       value: ResultButton
@@ -642,6 +686,18 @@ PrefabInstance:
     - target: {fileID: 6607855939914204049, guid: 0082294d2ba91ec4c8c0b4f554699a8d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7226064646586203317, guid: 0082294d2ba91ec4c8c0b4f554699a8d, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7226064646586203317, guid: 0082294d2ba91ec4c8c0b4f554699a8d, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.g
+      value: 0.49803922
+      objectReference: {fileID: 0}
+    - target: {fileID: 7226064646586203317, guid: 0082294d2ba91ec4c8c0b4f554699a8d, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
