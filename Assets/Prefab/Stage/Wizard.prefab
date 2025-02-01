@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 2614634854443678593}
   - component: {fileID: 5869295969230066593}
   - component: {fileID: 2582352264805320763}
-  - component: {fileID: 4212225080908432016}
+  - component: {fileID: 8578427189659286530}
+  - component: {fileID: 2303214828279513859}
   m_Layer: 7
   m_Name: Wizard
   m_TagString: Untagged
@@ -148,7 +149,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4212225080908432016}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
@@ -164,7 +165,7 @@ MonoBehaviour:
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4212225080908432016}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: OnJump
         m_Mode: 0
@@ -180,7 +181,7 @@ MonoBehaviour:
     m_ActionName: Player/Jump[/Keyboard/space]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4212225080908432016}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: OnStopJump
         m_Mode: 0
@@ -196,7 +197,7 @@ MonoBehaviour:
     m_ActionName: Player/StopJump[/Keyboard/space]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4212225080908432016}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: OnMagic1
         m_Mode: 0
@@ -212,7 +213,7 @@ MonoBehaviour:
     m_ActionName: Player/Magic1[/Keyboard/j]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4212225080908432016}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: OnMagic2
         m_Mode: 0
@@ -243,12 +244,8 @@ MonoBehaviour:
     m_ActionId: dcbdd576-bb49-454b-aaf2-2cf42f948158
     m_ActionName: UI/Cursor[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 095b007e-d690-4eef-9ced-0adbc89ba8cb
-    m_ActionName: UI/Decision
-  - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4212225080908432016}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: OnOpenWindow
         m_Mode: 0
@@ -262,12 +259,28 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: fdd2d2d2-2342-47a4-a5d8-e38b667c85f6
     m_ActionName: Player/OpenWindow[/SZMY-POWER CO.,LTD. EX10 GAMEPAD/button6]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ed5fd306-079f-4b6a-bade-3c859b6dbc6f
+    m_ActionName: UI/Open
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 23b4c79c-d248-4d04-b51a-4036eb264063
+    m_ActionName: UI/Back
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e9571200-857a-426e-a3f5-bcc7e2d93fb7
+    m_ActionName: MyUIMap/Decision[/DualShock4GamepadHID/buttonEast,/Keyboard/j]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f2245a35-c444-4446-ade1-1071697001e1
+    m_ActionName: MyUIMap/Switch[/DualShock4GamepadHID/buttonNorth,/Keyboard/k]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &4212225080908432016
+--- !u!114 &8578427189659286530
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -276,20 +289,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 924714849685591776}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3032e65259d4fb4459cc71f84247ccbe, type: 3}
+  m_Script: {fileID: 11500000, guid: 088906c2f6671d24985fa041452f2326, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2303214828279513859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 924714849685591776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58a4eb6335fdffc4484eab93055f085a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hitPoint: 100
+  strength: 100
+  defense: 100
   speed: 4
   jump: 4
-  jumpLimitTime: 0.9
-  gravity: 4
-  adjustValue: 0.01
-  ui: {fileID: 0}
-  mbText: {fileID: 0}
-  magics:
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!1 &7115750330407127202
 GameObject:
   m_ObjectHideFlags: 0

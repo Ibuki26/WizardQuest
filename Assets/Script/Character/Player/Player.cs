@@ -33,7 +33,6 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("start");
         //魔法クラスを作成して、親オブジェクトをPlayerにする
         GameObject magic1 = Instantiate(MySetedMagic.Instance.GetMagic(0), transform.position, Quaternion.identity);
         magic1.transform.parent = transform;
