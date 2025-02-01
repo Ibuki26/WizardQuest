@@ -8,9 +8,8 @@ public class IntroduceUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField, TextArea(2, 3)] private string introduceText;
 
-    public void OnCursorEnter()
+    public void ChangeUI()
     {
-        AudioManager.Instance.PlaySE(AudioType.cursor);
         text.text = introduceText;
     }
 }

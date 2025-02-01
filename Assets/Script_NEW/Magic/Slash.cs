@@ -3,24 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System;
+using WizardEnemy;
 
 namespace WizardMagic
 {
-    public class Slash : Magic
+    public class Slash : ShotMagic
     {
         protected override async void Action(float speed, float disappearTime)
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(disappearTime));
+            var token = this.GetCancellationTokenOnDestroy();
+            //指定時間が経ったらDestroy
+            await UniTask.Delay(TimeSpan.FromSeconds(disappearTime), cancellationToken: token);
             Destroy(gameObject);
         }
 
-        protected override void Effect(Enemy enemy)
+        public override void Effect(EnemyPresenter enemy)
         {
-            return;
-        }
-
-        protected override void Buff(Player player)
-        {
+            //敵に当たっても、残るため処理なし
             return;
         }
     }

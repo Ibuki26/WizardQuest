@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CloseWindowButtonForUI : MonoBehaviour
+namespace WizardUI
 {
-    private Button button;
-
-    void Start()
+    public class CloseWindowButtonForUI : MonoBehaviour
     {
-        button = GetComponent<Button>();
-        button.onClick.AddListener(() =>
+        [SerializeField] private ModeSelectButtonOperator modeOperator;
+        private Button button;
+
+        void Start()
         {
-            AudioManager.Instance.PlaySE(AudioType.closeWindow);
-            transform.parent.gameObject.SetActive(false);
-        });
-    }
-
-    public void OnCursorEnter()
-    {
-        AudioManager.Instance.PlaySE(AudioType.cursor);
+            button = GetComponent<Button>();
+            button.onClick.AddListener(() =>
+            {
+                AudioManager.Instance.PlaySE(AudioType.closeWindow);
+                transform.parent.gameObject.SetActive(false);
+                modeOperator.enabled = true;
+            });
+        }
     }
 }
