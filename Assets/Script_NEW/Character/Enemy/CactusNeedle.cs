@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using WizardPlayer;
+using WizardMagic;
 using Cysharp.Threading.Tasks;
 
 namespace WizardEnemy
