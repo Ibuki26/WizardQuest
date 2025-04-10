@@ -30,8 +30,6 @@ namespace WizardPlayer
         private float gravity = -4; //落下時のy方向の速度
         private float adjustRaycast_y = 0.005f; //Raycastをするときの発生座標の調整用数値
         private float jumpLimit = 0.7f; //ジャンプする限界時間
-        private float standardSpeed = 4.0f; //x方向の移動速度の基準値
-        private Vector2 playerVelocity = Vector2.zero; //プレイヤーの移動速度を記録する変数
 
         public WizardModel Model => _model;
         public MagicCreator[] Magics => magics;
@@ -67,7 +65,7 @@ namespace WizardPlayer
             //地面の接地判定
             IsGround();
             AdjustVelocity_y();
-            rb.velocity = playerVelocity;
+            rb.velocity = Model.PlayerVelocity;
         }
 
         private void OnEnable()
@@ -99,7 +97,7 @@ namespace WizardPlayer
             if (context.canceled)
             {
                 _view.SetAnimation("isRun", false);
-                playerVelocity.x = 0f;
+                Model.PlayerVelocityX = 0f;
                 return;
             }
 
@@ -112,7 +110,7 @@ namespace WizardPlayer
             transform.localScale = new Vector3(0.35f * _model.Direction, 0.35f, 1);
 
             _view.SetAnimation("isRun", true);
-            playerVelocity.x = standardSpeed * _model.Speed/100 * _model.Direction;
+            Model.PlayerVelocityX = Model.RunSpeed(Model.Speed, Model.Direction);
         }
 
         public async void OnJump(InputAction.CallbackContext context)
@@ -136,7 +134,7 @@ namespace WizardPlayer
                 //ジャンプを始める処理
                 AudioManager.Instance.PlaySE(AudioType.jump);
                 _view.SetAnimation("isJump", true);
-                playerVelocity.y = _model.Jump;
+                Model.PlayerVelocityY = _model.Jump;
                 currentState |= WizardControlState.Jumping;
                 
                 try
@@ -209,17 +207,18 @@ namespace WizardPlayer
 
         public async UniTask Damage(int enemyAttack, int enemyStrength)
         {
+            //ダメージ無視状態中と魔法使用中はダメージを受けない
             if (currentState.HasFlag(WizardControlState.IgnoreDamage)
                 || currentState.HasFlag(WizardControlState.Magicing)) return;
             if (_model.HitPoint.Value == 0) return;
 
             //無敵状態の開始
             currentState |= WizardControlState.IgnoreDamage;
-           
+
             //ダメージ量の計算
-            var resultDamage = enemyAttack + enemyStrength / 5 - _model.Defense/10;
+            var damage = Model.CalculateDamage(enemyAttack, enemyStrength);
             //体力-ダメージ量が負の値になったら0、そうでないなら体力-ダメージ量をそのまま代入
-            _model.HitPoint.Value = (_model.HitPoint.Value - resultDamage < 0) ? 0 : _model.HitPoint.Value - resultDamage;
+            _model.HitPoint.Value = Model.DecreaseHitPoint(damage);
             Die();
             
             //ダメージ演出
@@ -236,7 +235,7 @@ namespace WizardPlayer
         public void Heal(int healPoint)
         {
             //今の体力と回復値を足して、上限値を超えたら上限値を代入、そうでないなら体力+回復値を代入
-            _model.HitPoint.Value = (_model.HitPoint.Value + healPoint > _model.MaxHitPoint) ? _model.MaxHitPoint : _model.HitPoint.Value + healPoint;
+            _model.HitPoint.Value = Model.IncreaseHitPoint(healPoint);
         }
 
         private void Die()
@@ -244,10 +243,9 @@ namespace WizardPlayer
             if (_model.HitPoint.Value > 0) return;
 
             AudioManager.Instance.PlaySE(AudioType.gameOver);
-            playerVelocity = Vector2.zero;
+            Model.PlayerVelocity = Vector2.zero;
             _view.SetAnimTrigger("die");
             //ゲームオーバー画面の表示
-            AudioManager.Instance.PlaySE(AudioType.gameOver);
             _playerInput.actions.Disable();
             _playerInput.actions.FindActionMap("UI");
             overWindow.SetActive(true);
@@ -275,14 +273,14 @@ namespace WizardPlayer
             //地面と接しているときにy方向の速度が負の値のときの処理
             if(rb.velocity.y < 0 && currentState.HasFlag(WizardControlState.Standing))
             {
-                playerVelocity.y = 0f;
+                Model.PlayerVelocityY = 0f;
                 currentState &= ~WizardControlState.falling;
             }
 
             //ジャンプ中以外で空中にいるときの処理
             if(!currentState.HasFlag(WizardControlState.Jumping) && !currentState.HasFlag(WizardControlState.Standing))
             {
-                playerVelocity.y = gravity;
+                Model.PlayerVelocityY = gravity;
             }
         }
     }
