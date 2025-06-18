@@ -259,7 +259,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneName: SelectStatus
   type: 0
-  reset: 0
 --- !u!1 &161370732
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,7 +270,6 @@ GameObject:
   - component: {fileID: 161370733}
   - component: {fileID: 161370735}
   - component: {fileID: 161370734}
-  - component: {fileID: 161370736}
   m_Layer: 5
   m_Name: BackBoard
   m_TagString: Untagged
@@ -340,18 +338,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 161370732}
   m_CullTransparentMesh: 1
---- !u!114 &161370736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 161370732}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b1e6504a05329d489ecd52ba2667b79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &248420150
 GameObject:
   m_ObjectHideFlags: 0
@@ -580,7 +566,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneName: EasyScene
   type: 0
-  reset: 0
 --- !u!1 &348407196
 GameObject:
   m_ObjectHideFlags: 0
@@ -874,7 +859,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 639481237}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fcbdd592aba313d49af158a66e413992, type: 3}
   m_Name: 
@@ -972,7 +957,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
+  m_SendPointerHoverToParent: 0
   m_MoveRepeatDelay: 0.5
   m_MoveRepeatRate: 0.1
   m_XRTrackingOrigin: {fileID: 0}
