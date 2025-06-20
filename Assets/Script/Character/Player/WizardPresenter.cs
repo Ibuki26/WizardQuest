@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class WizardPresenter : MonoBehaviour
 {
+    //初期値の登録
     [SerializeField] private int hitPoint;
     [SerializeField] private int strength;
     [SerializeField] private int defense;
@@ -18,6 +19,7 @@ public class WizardPresenter : MonoBehaviour
     private GroundChecker ground;
     private MagicCreator[] magics = new MagicCreator[2];
     private PlayerInput _playerInput;
+    private SkillManager skillManager;
     private Rigidbody2D rb;
 
     private float gravity = -6; //落下時のy方向の速度
@@ -30,8 +32,8 @@ public class WizardPresenter : MonoBehaviour
     private void SetM()
     {
         //魔法のセット
-        magics[0] = MagicCreator.Initialize(MyStatus.magics[0]);
-        magics[1] = MagicCreator.Initialize(MyStatus.magics[1]);
+        magics[0] = MagicCreator.Initialize(MyStatus.Instance.magics[0]);
+        magics[1] = MagicCreator.Initialize(MyStatus.Instance.magics[1]);
     }
 
     private void Awake()
@@ -47,11 +49,15 @@ public class WizardPresenter : MonoBehaviour
         _view.ManualStart();
         stateCon = GetComponent<WizardStateController>();
         stateCon.SetState(WizardState.Standing);
+        skillManager = GetComponent<SkillManager>();
         ground = GetComponent<GroundChecker>();
 
         //Magicの取得
         SetM();
         //装備の取得
+        SkillBase[] skills = { MyStatus.Instance.equipments[0].skill, MyStatus.Instance.equipments[1].skill };
+        skillManager.RegisterSkills(skills , _model);
+        skillManager.TriggerOnGameStart(magics);
         //UIへの情報の送信　いるか不明
     }
 
