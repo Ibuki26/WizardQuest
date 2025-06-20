@@ -14,13 +14,8 @@ public class SelectSetMagic : MonoBehaviour
 
     private void Start()
     {
-        if (MyStatus.magics[0] == null)
-        {
-            MyStatus.magics[0] = MyStatus.Instance.firstMagics[0];
-            MyStatus.magics[1] = MyStatus.Instance.firstMagics[1];
-        }
-        magicIcon[0].sprite = MyStatus.magics[0].Image;
-        magicIcon[1].sprite = MyStatus.magics[1].Image;
+        magicIcon[0].sprite = MyStatus.Instance.magics[0].Image;
+        magicIcon[1].sprite = MyStatus.Instance.magics[1].Image;
     }
 
     private void OnEnable()
@@ -49,7 +44,7 @@ public class SelectSetMagic : MonoBehaviour
 
     public void SetMagic(MagicCreatorStatus status)
     {
-        MyStatus.magics[selectNum] = status;
+        MyStatus.Instance.magics[selectNum] = status;
         magicIcon[selectNum].sprite = status.Image;
     }
 }
