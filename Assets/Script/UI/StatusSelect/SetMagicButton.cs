@@ -32,12 +32,12 @@ public class SetMagicButton : UIButtonBase, ICancelHandler
     protected void PerformAction(int num)
     {
         //セットする2つの魔法が同じになるかの確認
-        if (MyStatus.magics[1 - num] != magic)
+        if (MyStatus.Instance.magics[1 - num] != magic)
         {
             //SEを流す
             AudioManager.Instance.PlaySE(AudioType.button);
             //操作する魔法の登録
-            MyStatus.magics[num] = magic;
+            MyStatus.Instance.magics[num] = magic;
             //魔法アイコンの画像変更
             magicIcons[num].sprite = magic.Image;
         }
