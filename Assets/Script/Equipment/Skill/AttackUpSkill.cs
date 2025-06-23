@@ -8,8 +8,7 @@ public class AttackUpSkill : SkillBase, IOnGameStart
     public void OnGameStart(MagicCreator[] magics)
     {
         foreach (var magic in magics.OfType<ShotMagicCreator>()) {
-            //magic.Status.Attack += 10;
-            _model.Speed += 10;
+            magic.Status.Attack += 10;
         }
     }
 }

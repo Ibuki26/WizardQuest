@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class AreaMagic : Magic, Magic.CreateMethod
+public abstract class AreaMagic : MonoBehaviour
 {
     public GameObject Create(AreaMagicCreatorStatus status, Vector3 playerPosition, int direction)
     {

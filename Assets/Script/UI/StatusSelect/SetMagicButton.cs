@@ -7,7 +7,7 @@ using Cysharp.Threading.Tasks;
 
 public class SetMagicButton : UIButtonBase, ICancelHandler
 {
-    [SerializeField] private MagicCreatorStatus magic;
+    [SerializeField] private MagicCreatorStatusData magic;
     private Image[] magicIcons = new Image[2]; //セット中の魔法の画像を表示するオブジェクト
     private TextMeshProUGUI textMesh; //魔法の紹介文を表示するオブジェクト
 
@@ -39,7 +39,7 @@ public class SetMagicButton : UIButtonBase, ICancelHandler
             //操作する魔法の登録
             MyStatus.Instance.magics[num] = magic;
             //魔法アイコンの画像変更
-            magicIcons[num].sprite = magic.Image;
+            magicIcons[num].sprite = magic.image;
         }
         //同じ魔法をセットしようとしたとき失敗する
         else

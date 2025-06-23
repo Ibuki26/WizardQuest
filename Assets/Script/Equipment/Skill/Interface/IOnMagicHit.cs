@@ -4,6 +4,6 @@ namespace Skill
 {
     public interface IOnMagicHit
     {
-        void OnMagicHit(EnemyModel enemyModel);
+        void OnMagicHit(MagicHitContext context);
     }
 }
