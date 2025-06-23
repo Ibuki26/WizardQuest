@@ -1,4 +1,6 @@
 
+using UnityEngine;
+
 public class AreaMagicCreator : MagicCreator
 {
     private AreaMagicCreatorStatus _status;
@@ -10,7 +12,7 @@ public class AreaMagicCreator : MagicCreator
         _status = status;
     }
 
-    public override void CreateMagic(WizardPresenter player, int num)
+    public override void CreateMagic(WizardModel playerModel, Vector3 position, int num)
     {
         throw new System.NotImplementedException();
     }

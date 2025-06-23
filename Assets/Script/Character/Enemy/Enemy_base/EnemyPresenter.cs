@@ -2,6 +2,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System;
 using DG.Tweening;
+using ShotMagicMethod;
 
 public abstract class EnemyPresenter : MonoBehaviour
 {
@@ -51,9 +52,14 @@ public abstract class EnemyPresenter : MonoBehaviour
         if (collision.TryGetComponent<ShotMagic>(out var shotMagic)
             && !_model.CurrentState.HasFlag(EnemyControlState.IgnoreDamage))
         {
-            Damage(shotMagic.Attack, shotMagic.Strength).Forget();
+            Damage(shotMagic.Status.Attack, shotMagic.Model.Strength).Forget();
             //shoot型Magicの当たったときの効果
-            shotMagic.Effect(this);
+            var method = shotMagic as IShotMagicEffect;
+            if (method != null)
+                method.Effect(_model);
+            //スキルの実行
+            var context = new MagicHitContext(shotMagic.Model, shotMagic.Status, _model, 0);
+            SkillManager.Instance.TriggerOnMagicHit(context);
         }
 
         //AreaMagicが未実装のため未完成
@@ -63,7 +69,7 @@ public abstract class EnemyPresenter : MonoBehaviour
 
         }
 
-        //プライヤーにダメージを与える処理
+        //プレイヤーにダメージを与える処理
         if (collision.transform.parent != null
             && collision.transform.parent.TryGetComponent<WizardPresenter>(out var player))
         {

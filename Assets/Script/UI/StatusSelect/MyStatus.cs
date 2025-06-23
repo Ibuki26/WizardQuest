@@ -1,6 +1,5 @@
 
 public class MyStatus : SingletonMonoBehaviour<MyStatus>
 {
-    public  MagicCreatorStatus[] magics = new MagicCreatorStatus[2];
-    public  Equipment[] equipments = new Equipment[2];
+    public  MagicCreatorStatusData[] magics = new MagicCreatorStatusData[2];
 }

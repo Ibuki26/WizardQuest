@@ -3,17 +3,9 @@ using System.Linq;
 using Skill;
 
 //スキルの登録と実行を管理するクラス
-public class SkillManager : MonoBehaviour
+public class SkillManager : SingletonMonoBehaviour<SkillManager>
 {
-    private SkillBase[] skills = new SkillBase[2]; //スキルを記録する配列
-
-    //スキルの登録
-    public void RegisterSkills(SkillBase[] skills, WizardModel model) 
-    {
-        this.skills = skills;
-        foreach (var skill in skills)
-            skill.Initialize(model);
-    }
+    [SerializeField] private SkillBase[] skills = new SkillBase[2]; //スキルを記録する配列
 
     //ゲーム開始時のスキルの実行
     public void TriggerOnGameStart(MagicCreator[] magics)
@@ -30,9 +22,10 @@ public class SkillManager : MonoBehaviour
     }
 
     //魔法が当たった時のスキルの実行
-    public void TriggerOnMagicHit(EnemyModel enemyModel)
+    //EnemyPresenterの被ダメージ時の処理で呼び出す
+    public void TriggerOnMagicHit(MagicHitContext context)
     {
         foreach (var skill in skills.OfType<IOnMagicHit>())
-            skill.OnMagicHit(enemyModel);
+            skill.OnMagicHit(context);
     }
 }

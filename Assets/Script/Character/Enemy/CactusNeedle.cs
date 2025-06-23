@@ -34,7 +34,7 @@ public class CactusNeedle : MonoBehaviour
             Destroy(gameObject, 0.1f);
         }
 
-        if (collision.gameObject.TryGetComponent<Magic>(out _))
+        if (collision.gameObject.TryGetComponent<ShotMagic>(out _))
         {
             Destroy(gameObject, 0.1f);
         }

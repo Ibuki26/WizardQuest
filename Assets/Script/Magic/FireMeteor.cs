@@ -1,22 +1,35 @@
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using ShotMagicMethod;
 
-public class FireMeteor : ShotMagic
+public class FireMeteor : ShotMagic, IShotMagicEffect
 {
     private Rigidbody2D rb;
     private Animator anim;
 
     private float speed_y = -3.0f;
 
-    protected override void Action(float speed, float destroyTime)
+    public override void Action()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         //速度の設定
-        rb.velocity = new Vector2(speed, speed_y);
+        rb.velocity = new Vector2(_status.Speed * _model.Direction, speed_y);
     }
 
-    public async override void Effect(EnemyPresenter enemy)
+    public void Effect(EnemyModel enemyModel)
+    {
+        SetEffectAsync(enemyModel).Forget();
+    }
+
+    //画面外に出たときDestroy
+    private void OnBecameInvisible()
+    {
+        Destroy(gameObject);
+    }
+
+    //戻り値がvoidの関数内でawaitするための関数
+    private async UniTask SetEffectAsync(EnemyModel enemyModel)
     {
         //敵に当たったとき、アニメーションを開始し動きを止める
         anim.SetBool("hit", true);
@@ -28,12 +41,6 @@ public class FireMeteor : ShotMagic
             && anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f
             , cancellationToken: this.GetCancellationTokenOnDestroy());
 
-        Destroy(gameObject);
-    }
-
-    //画面外に出たときDestroy
-    private void OnBecameInvisible()
-    {
         Destroy(gameObject);
     }
 }

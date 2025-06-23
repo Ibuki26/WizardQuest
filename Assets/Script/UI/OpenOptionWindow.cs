@@ -5,7 +5,6 @@ public class OpenOptionWindow : MonoBehaviour
 {
     [SerializeField] private InputActionReference actionRef;
     [SerializeField] private GameObject option;
-    [SerializeField] private ModeSelectButtonOperator modeOperator;
     private InputAction action;
 
     private void OnEnable()
@@ -30,7 +29,6 @@ public class OpenOptionWindow : MonoBehaviour
     private void OnOpenOption(InputAction.CallbackContext context)
     {
         AudioManager.Instance.PlaySE(AudioType.openWindow);
-        modeOperator.enabled = false;
         option.SetActive(true);
     }
 }
