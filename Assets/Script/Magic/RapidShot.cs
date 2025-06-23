@@ -1,32 +1,30 @@
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System;
+using ShotMagicMethod;
 
-public class RapidShot : ShotMagic
+public class RapidShot : ShotMagic, IShotMagicEffect
 {
-    private Rigidbody2D rb;
-
-    protected override async void Action(float speed, float destroyTime)
+    public override void Action()
     {
-        //速度の設定
-        rb = GetComponent<Rigidbody2D>();
-        rb.velocity = new Vector2(speed, 0);
-        var token = this.GetCancellationTokenOnDestroy();
-        //指定時間が経ったらDestroy
-        try
-        {
-            await UniTask.Delay(TimeSpan.FromSeconds(destroyTime), cancellationToken: token);
-            Destroy(gameObject);
-        }
-        catch
-        {
-
-        }
+        SetActionAsync().Forget();
     }
 
-    public override void Effect(EnemyPresenter enemy)
+    public void Effect(EnemyModel enemyModel)
     {
         //敵に当たったら無くなる
         Destroy(gameObject, 0.1f);
+    }
+
+    //戻り値がvoidの関数内でawaitするための関数
+    private async UniTask SetActionAsync()
+    {
+        //速度の設定
+        var rb = GetComponent<Rigidbody2D>();
+        rb.velocity = new Vector2(_status.Speed * _model.Direction, 0);
+        //指定時間が経ったらDestroy
+        await UniTask.Delay(TimeSpan.FromSeconds(_status.DestroyTime),
+            cancellationToken: this.GetCancellationTokenOnDestroy());
+        Destroy(gameObject);
     }
 }

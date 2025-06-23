@@ -3,7 +3,6 @@ using UnityEngine.InputSystem;
 
 public class MenuButtonOperator : MonoBehaviour
 {
-    [SerializeField] private ButtonArray array;
     [SerializeField] private InputActionReference actionRef;
     [SerializeField] private InputActionReference actionRef2;
     private InputAction action;
@@ -55,11 +54,10 @@ public class MenuButtonOperator : MonoBehaviour
         }
 
         AudioManager.Instance.PlaySE(AudioType.cursor);
-        array.SelectButton(selectNum);
     }
 
     private void OnClickButton(InputAction.CallbackContext context)
     {
-        array.Click();
+        
     }
 }
