@@ -3,17 +3,17 @@ using System;
 
 public class Slash : ShotMagic
 {
-    protected override async void Action(float speed, float disappearTime)
+    public override void Action()
     {
-        var token = this.GetCancellationTokenOnDestroy();
-        //指定時間が経ったらDestroy
-        await UniTask.Delay(TimeSpan.FromSeconds(disappearTime), cancellationToken: token);
-        Destroy(gameObject);
+        SetActionAsync().Forget();
     }
 
-    public override void Effect(EnemyPresenter enemy)
+    //戻り値がvoidの関数内でawaitするための関数
+    private async UniTask SetActionAsync()
     {
-        //敵に当たっても、残るため処理なし
-        return;
+        //指定時間が経ったらDestroy
+        await UniTask.Delay(TimeSpan.FromSeconds(_status.DestroyTime),
+            cancellationToken: this.GetCancellationTokenOnDestroy());
+        Destroy(gameObject);
     }
 }

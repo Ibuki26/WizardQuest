@@ -2,6 +2,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine.InputSystem;
+using System.Linq;
 
 public class WizardPresenter : MonoBehaviour
 {
@@ -19,7 +20,6 @@ public class WizardPresenter : MonoBehaviour
     private GroundChecker ground;
     private MagicCreator[] magics = new MagicCreator[2];
     private PlayerInput _playerInput;
-    private SkillManager skillManager;
     private Rigidbody2D rb;
 
     private float gravity = -6; //落下時のy方向の速度
@@ -32,8 +32,16 @@ public class WizardPresenter : MonoBehaviour
     private void SetM()
     {
         //魔法のセット
-        magics[0] = MagicCreator.Initialize(MyStatus.Instance.magics[0]);
-        magics[1] = MagicCreator.Initialize(MyStatus.Instance.magics[1]);
+        magics[0] = MagicCreator.Initialize(MyStatus.Instance.magics[0], Instantiate);
+        magics[1] = MagicCreator.Initialize(MyStatus.Instance.magics[1], Instantiate);
+    }
+
+    public void SetBuffEffecterToBuffMagic(BuffEffecter buffEffecter)
+    {
+        foreach (var buff in magics.OfType<BuffMagicCreator>())
+        {
+            buff.Initialize(buffEffecter);
+        }
     }
 
     private void Awake()
@@ -49,15 +57,12 @@ public class WizardPresenter : MonoBehaviour
         _view.ManualStart();
         stateCon = GetComponent<WizardStateController>();
         stateCon.SetState(WizardState.Standing);
-        skillManager = GetComponent<SkillManager>();
         ground = GetComponent<GroundChecker>();
 
         //Magicの取得
         SetM();
-        //装備の取得
-        SkillBase[] skills = { MyStatus.Instance.equipments[0].skill, MyStatus.Instance.equipments[1].skill };
-        skillManager.RegisterSkills(skills , _model);
-        skillManager.TriggerOnGameStart(magics);
+        //装備のゲーム開始スキル起動
+        SkillManager.Instance.TriggerOnGameStart(magics);
         //UIへの情報の送信　いるか不明
     }
 
@@ -109,6 +114,12 @@ public class WizardPresenter : MonoBehaviour
         _model.Direction = (xAxis > 0) ? 1 : -1;
         transform.localScale = new Vector3(0.35f * _model.Direction, 0.35f, 1);
 
+        //BuffEffecterの向きの調整
+        foreach (var buff in magics.OfType<BuffMagicCreator>())
+        {
+            buff.Status.Magic.SetBuffEffecterSpriteFlip(_model.Direction);
+        }
+
         _view.SetAnimation("isRun", true);
         Model.PlayerVelocityX = Model.RunSpeed(Model.Speed, Model.Direction);
     }
@@ -152,7 +163,7 @@ public class WizardPresenter : MonoBehaviour
             _view.StateInfo.normalizedTime >= 0.9f
         , cancellationToken: this.GetCancellationTokenOnDestroy());
 
-        magics[magicNum].CreateMagic(this, magicNum);
+        magics[magicNum].CreateMagic(_model, transform.position, magicNum);
         //別のボタンの魔法をほぼ同時に使えないように待機
         await UniTask.Delay(TimeSpan.FromSeconds(0.3f));
         stateCon.DeleteState(WizardState.Magicing);
