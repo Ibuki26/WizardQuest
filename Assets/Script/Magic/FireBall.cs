@@ -16,9 +16,13 @@ public class FireBall : ShotMagic, IShotMagicEffect
         SetActionAsync().Forget();
     }
 
-    public void Effect(EnemyModel enemyModel)
+    public void Effect(EnemyPresenter enemy)
     {
-        SetEffectAsync(enemyModel).Forget();
+        //敵が倒れた時にはノックバックは実行しない
+        if (enemy.Model.HitPoint != 0)
+            SetEffectAsync(enemy).Forget();
+        else
+            Destroy(gameObject);
     }
 
     //戻り値がvoidの関数内でawaitするための関数
@@ -35,18 +39,18 @@ public class FireBall : ShotMagic, IShotMagicEffect
     }
 
     //戻り値がvoidの関数内でawaitするための関数
-    private async UniTask SetEffectAsync(EnemyModel enemyModel)
+    private async UniTask SetEffectAsync(EnemyPresenter enemy)
     {
         //Actionのawaitをキャンセル
+        hasDispose = true;
         cts?.Cancel();
         cts?.Dispose();
-        hasDispose = true;
         anim.SetBool("disappear", true);
 
         //ノックバックする方向
         int direction = (rb.velocity.x > 0) ? 1 : -1;
         //Enemyをノックバックする
-        //enemyModel.KnockBack(direction * 0.8f).Forget();
+        enemy.Knockback(new Vector2(direction, 0), 1.5f).Forget();
 
         rb.velocity = Vector2.zero;
 

@@ -10,7 +10,7 @@
                     "type": "Value",
                     "id": "dacd9e8c-5685-4a61-b1d9-ea9e94cdebdf",
                     "expectedControlType": "Stick",
-                    "processors": "StickDeadzone(min=0.5)",
+                    "processors": "StickDeadzone(min=0.2)",
                     "interactions": "",
                     "initialStateCheck": true
                 },
@@ -132,7 +132,7 @@
                     "id": "925cd719-6517-466c-b7ec-3cdb30a794ff",
                     "path": "<Gamepad>/leftStick",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "StickDeadzone(min=0.5)",
                     "groups": "",
                     "action": "Move",
                     "isComposite": false,
@@ -273,7 +273,7 @@
                 {
                     "name": "",
                     "id": "f25877d2-069a-4fd9-b1ff-6a956c70a6e5",
-                    "path": "<HID::SZMY-POWER CO.,LTD. EX10 GAMEPAD>/button6",
+                    "path": "<Keyboard>/p",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -284,7 +284,7 @@
                 {
                     "name": "",
                     "id": "8fab95dc-5101-4634-844d-8190eb0bb2db",
-                    "path": "<Gamepad>/rightShoulder",
+                    "path": "<Gamepad>/start",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

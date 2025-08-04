@@ -10,7 +10,7 @@ public class RapidShot : ShotMagic, IShotMagicEffect
         SetActionAsync().Forget();
     }
 
-    public void Effect(EnemyModel enemyModel)
+    public void Effect(EnemyPresenter _)
     {
         //“G‚É“–‚½‚Á‚½‚ç–³‚­‚È‚é
         Destroy(gameObject, 0.1f);

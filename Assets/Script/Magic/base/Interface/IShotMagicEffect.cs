@@ -5,6 +5,6 @@ namespace ShotMagicMethod
     public interface IShotMagicEffect
     {
         //ˆø”‚ÉEnemyStateController‚à“ü‚ê‚é
-        void Effect(EnemyModel enemyModel);
+        void Effect(EnemyPresenter enemy);
     }
 }

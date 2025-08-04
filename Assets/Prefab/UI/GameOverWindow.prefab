@@ -291,8 +291,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5279148922422806855}
-  - component: {fileID: 1997993227065649161}
-  - component: {fileID: 797203591659034622}
   m_Layer: 5
   m_Name: GameOverWindow
   m_TagString: Untagged
@@ -324,36 +322,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 880, y: 550}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1997993227065649161
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6207650653889784898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2579d9b1dec1e254e8468f04d7f0c354, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  array: {fileID: 797203591659034622}
-  actionRef: {fileID: -1574837692671693998, guid: 0e17c2d0e82ae8f43a866cff8691a531, type: 3}
-  actionRef2: {fileID: 6319529546141582885, guid: 0e17c2d0e82ae8f43a866cff8691a531, type: 3}
---- !u!114 &797203591659034622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6207650653889784898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d85381ca680b343429ad826bd56bad9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttons:
-  - {fileID: 3269101421177216693}
-  - {fileID: 4425083209184601015}
 --- !u!1 &7723388051268775384
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,14 +511,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6551280577309378744, guid: db44eb75d47a2fc4f801218ecba413df, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3162479376522484287}
+      addedObject: {fileID: 150552489615737468}
   m_SourcePrefab: {fileID: 100100000, guid: db44eb75d47a2fc4f801218ecba413df, type: 3}
 --- !u!1 &4425083209184601015 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6551280577309378744, guid: db44eb75d47a2fc4f801218ecba413df, type: 3}
   m_PrefabInstance: {fileID: 7459050883533204239}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3162479376522484287
+--- !u!114 &150552489615737468
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -559,42 +527,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 4425083209184601015}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Script: {fileID: 11500000, guid: 91d9c9db2ea730d41a4ec6883f1bc0c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 9035217840021293825}
-          m_TargetAssemblyTypeName: LoadSceneButton, Assembly-CSharp
-          m_MethodName: OnCursorEnter
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!224 &6346621736419065994 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4580272514504551301, guid: db44eb75d47a2fc4f801218ecba413df, type: 3}
   m_PrefabInstance: {fileID: 7459050883533204239}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &9035217840021293825 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1936641862982082574, guid: db44eb75d47a2fc4f801218ecba413df, type: 3}
-  m_PrefabInstance: {fileID: 7459050883533204239}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4425083209184601015}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bb0014d6507aa54bb209464f4ca5cea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &7590486032978602846
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -705,25 +645,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4902446064746821099, guid: 0082294d2ba91ec4c8c0b4f554699a8d, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4675322132273617924}
+      addedObject: {fileID: 3891934744948473308}
   m_SourcePrefab: {fileID: 100100000, guid: 0082294d2ba91ec4c8c0b4f554699a8d, type: 3}
---- !u!114 &360384696437742811 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7806573429761013637, guid: 0082294d2ba91ec4c8c0b4f554699a8d, type: 3}
-  m_PrefabInstance: {fileID: 7590486032978602846}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3269101421177216693}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bb0014d6507aa54bb209464f4ca5cea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3269101421177216693 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4902446064746821099, guid: 0082294d2ba91ec4c8c0b4f554699a8d, type: 3}
   m_PrefabInstance: {fileID: 7590486032978602846}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4675322132273617924
+--- !u!114 &3891934744948473308
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -732,26 +661,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3269101421177216693}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Script: {fileID: 11500000, guid: 91d9c9db2ea730d41a4ec6883f1bc0c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 360384696437742811}
-          m_TargetAssemblyTypeName: LoadSceneButton, Assembly-CSharp
-          m_MethodName: OnCursorEnter
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!224 &3667340920921680079 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6607855939914204049, guid: 0082294d2ba91ec4c8c0b4f554699a8d, type: 3}

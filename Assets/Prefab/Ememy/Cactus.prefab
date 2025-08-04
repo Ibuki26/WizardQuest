@@ -12,9 +12,11 @@ GameObject:
   - component: {fileID: 7077080002194088673}
   - component: {fileID: 8865998049082771453}
   - component: {fileID: 3618357610003139102}
+  - component: {fileID: 5135661339087820627}
   - component: {fileID: 4655079084484685706}
   - component: {fileID: 739948815147352032}
   - component: {fileID: 7166728141380561749}
+  - component: {fileID: -4511930547517760177}
   m_Layer: 6
   m_Name: Cactus
   m_TagString: Untagged
@@ -161,6 +163,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!95 &5135661339087820627
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3897800583532853514}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5ffab190feea9ff4abab3302da705d3d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &4655079084484685706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,21 +196,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b0161c6d3a199d4f875755dc48e14b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 120
-  strength: 30
-  defense: 50
-  xSpeed: 0
-  ySpeed: 0
-  moveSpeed: 0
+  hp: 68
+  strength: 25
+  defense: 60
   score: 300
   direction: -1
-  needle: {fileID: -355554579159778170, guid: c6bd221eb0e604242a0cb51da2f0ec39, type: 3}
+  needle: {fileID: 550352565170430915, guid: c6bd221eb0e604242a0cb51da2f0ec39, type: 3}
   player: {fileID: 0}
-  sprites:
-  - {fileID: 21300000, guid: e9afaf428b2cef94cb5947a26fd0fa12, type: 3}
-  - {fileID: 21300000, guid: 4cf1e75c2cc11514dadfc4bb1d723f85, type: 3}
-  - {fileID: 21300000, guid: d98a051b250d06540b9d2a7772925b5a, type: 3}
-  - {fileID: 21300000, guid: 71d73e708fc83cb48909c04461b440cb, type: 3}
 --- !u!114 &739948815147352032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,7 +228,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 907487a0129354549b2ae56a551fad9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _self: {fileID: 1521908020153347947}
   _target: {fileID: 0}
   _sightAngle: 120
   _maxDistance: 11
+--- !u!114 &-4511930547517760177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3897800583532853514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aed48e7fb94a1241bfe32aa231c0aaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

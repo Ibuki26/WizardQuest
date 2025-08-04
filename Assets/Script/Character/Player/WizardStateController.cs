@@ -1,8 +1,13 @@
-using UnityEngine;
 
-public class WizardStateController : MonoBehaviour
+public class WizardStateController
 {
     private WizardState currentState; //プレイヤーの現在の状況を記録する
+
+    //インスタンスの生成
+    public WizardStateController()
+    {
+        currentState = default;
+    }
 
     //WizardStateをセットする関数。ManualStartで呼ぶ
     public void SetState(WizardState set)

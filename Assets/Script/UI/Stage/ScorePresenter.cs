@@ -18,5 +18,6 @@ public class ScorePresenter : MonoBehaviour
     {
         _model.Score += addScore;
         _view.UpdateText(_model);
+        PlayDataRecorder.Instance.SetScore(_model.Score);
     }
 }

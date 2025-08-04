@@ -1,113 +1,155 @@
 using UnityEngine;
-using DG.Tweening;
 using Cysharp.Threading.Tasks;
 using System;
 
-public class Boar : EnemyPresenter
+public class Boar : GroundMovingEnemyPresenter
 {
-    private RaycastHit2D hit, hit2;
+    [SerializeField] private float upValue; //スピードアップ時の加算値
     private EnemySightChecker esc;
 
-    private float adjustRaycast_x = 0.65f;
-    private float adjustRaycastGround_y = 0.6f;
+    //Raycastの調整用数値
+    private float adjustRaycastX_turn = 0.95f;
+    private float adjustRaycastGround = 0.04f;
+    private float adjustRaycastWall = 0.53f;
 
     public override void ManualStart()
     {
         base.ManualStart();
         esc = GetComponent<EnemySightChecker>();
+        esc.Initialize();
+        _view.FlipXImage(_model.Direction);
     }
 
-    public override void ManualFixedUpdate()
+    protected override void Move()
     {
-        CheckMoveToGround();
-        CheckWall();
-        esc.IsVisible(this);
-        CheckSight();
-        SetAttack();
-        Move();
+        SetMoveAsync().Forget();
     }
-
-    private void Move()
+    
+    //FixedUpdate内でawaitするための関数
+    private async UniTask SetMoveAsync()
     {
-        if (!Model.CurrentState.HasFlag(EnemyControlState.OnCamera)
-             || Model.CurrentState.HasFlag(EnemyControlState.Stopped)
-             || Model.HitPoint == 0) return;
+        if (!stateCon.HasState(EnemyState.Standing)
+            || stateCon.HasState(EnemyState.Moving)) return;
 
-        Tween = transform.DOMove(transform.position + new Vector3(Model.XSpeed * Model.Direction, 0, 0)
-            , Model.MoveSpeed, false);
-    }
-
-    //Attackの数値設定
-    private void SetAttack()
-    {
-        Model.Attack = Model.CurrentState.HasFlag(EnemyControlState.Moving) ? 50 : 30;
-    }
-
-    public override void StopOrder(float stopTime)
-    {
-        Tween.Kill();
-    }
-
-    private async void CheckSight()
-    {
-        if (!Model.CurrentState.HasFlag(EnemyControlState.Finding)
-            && Model.CurrentState.HasFlag(EnemyControlState.FindPlayer))
+        //視界にプレイヤ―がいるとき
+        if (esc.IsVisible(GroundModel))
         {
-            Model.CurrentState |= EnemyControlState.Finding;
-            Model.MoveSpeed -= 0.15f;
-            await UniTask.WaitUntil(() => !Model.CurrentState.HasFlag(EnemyControlState.FindPlayer));
-            await UniTask.Delay(TimeSpan.FromSeconds(1.0f));
-            Model.CurrentState &= ~EnemyControlState.Finding;
-            Model.MoveSpeed += 0.15f;
+            stateCon.AddState(EnemyState.Moving);
+            rb2d.velocity = new Vector2((GroundModel.XSpeed + upValue) * GroundModel.Direction, 0);
+
+            await UniTask.WaitUntil(() => !esc.IsVisible(GroundModel), cancellationToken : cts.Token);
+            await WaitAction(2f);
+
+            stateCon.DeleteState(EnemyState.Moving);
+        }
+        //視界にプレイヤーがいないとき
+        else
+        {
+            rb2d.velocity = new Vector2(GroundModel.XSpeed * GroundModel.Direction, 0);
         }
     }
 
-    //移動先に地面があるかの確認
-    private void CheckMoveToGround()
+    protected override void CheckGround()
     {
-        if (!Model.CurrentState.HasFlag(EnemyControlState.OnCamera)
-            || Model.CurrentState.HasFlag(EnemyControlState.Stopped)
-            || Model.HitPoint == 0) return;
-
-        hit = Physics2D.Raycast(new Vector2(transform.position.x + adjustRaycast_x * Model.Direction, transform.position.y - adjustRaycastGround_y), Vector2.down, 0.1f);
-        Debug.DrawRay(new Vector2(transform.position.x + adjustRaycast_x * Model.Direction, transform.position.y - adjustRaycastGround_y), Vector2.down * 0.1f, Color.red);
+        var adjustPosition = new Vector2(transform.position.x, transform.position.y - adjustRaycastGround);
         //地面と接しているとき
-        if (hit.collider != null && !hit.collider.isTrigger)
+        if (RaycastHelper.CheckGroundAndWalls(adjustPosition, Vector2.down, 0.05f, Color.red))
+        {
+            stateCon.AddState(EnemyState.Standing);
+            return;
+        }
+
+        //地面と接していないとき
+        stateCon.DeleteState(EnemyState.Standing);
+        Fall();
+
+        return;
+    }
+
+    protected override void CheckGroundToTurn()
+    {
+        if (!stateCon.HasState(EnemyState.Standing)) return;
+
+        var adjustPosition_x = transform.position.x + adjustRaycastX_turn * GroundModel.Direction;
+        var adjustPosition_y = transform.position.y - adjustRaycastGround;
+        //地面とあるとき
+        if (RaycastHelper.CheckGroundAndWalls(new Vector2(adjustPosition_x, adjustPosition_y), Vector2.down, 0.1f, Color.red))
         {
             return;
         }
 
-        Model.Direction *= -1;
+        //地面が無いとき
+        GroundModel.Direction *= -1;
         //向きの調整
-        transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x) * Model.Direction, transform.localScale.y, transform.localScale.z);
+        _view.FlipXImage(GroundModel.Direction);
         return;
     }
 
-    //移動方向に壁があるかの確認
-    private void CheckWall()
+    protected override void CheckWallToTurn()
     {
-        if (!Model.CurrentState.HasFlag(EnemyControlState.OnCamera)
-            || Model.CurrentState.HasFlag(EnemyControlState.Stopped)
-            || Model.HitPoint == 0) return;
+        if (!stateCon.HasState(EnemyState.Standing)) return;
 
         //Raycastの発生位置の調整
-        var adjustPosition_x = transform.position.x + adjustRaycast_x * Model.Direction;
-        var direction = new Vector2(Model.Direction, 0);
-        hit2 = Physics2D.Raycast(new Vector2(adjustPosition_x, transform.position.y), direction, 0.1f);
-        Debug.DrawRay(new Vector2(adjustPosition_x, transform.position.y), direction * 0.1f, Color.red);
-        //他オブジェクトにぶつかったとき
-        if (hit2.collider != null && !hit2.collider.isTrigger)
+        var adjustPosition_x = transform.position.x + adjustRaycastX_turn * GroundModel.Direction;
+        var adjustPosition_y = transform.position.y + adjustRaycastWall;
+        var direction = new Vector2(GroundModel.Direction, 0);
+        //壁があるとき
+        if (RaycastHelper.CheckGroundAndWalls(new Vector2(adjustPosition_x, adjustPosition_y), direction, 0.1f, Color.red))
         {
-            //ぶつかったオブジェクトが他EnemyかPlayerのときは無視
-            if (hit2.collider.TryGetComponent<EnemyPresenter>(out _) ||
-                hit2.collider.TryGetComponent<WizardPresenter>(out _))
-            {
-                return;
-            }
-
-            Model.Direction *= -1;
+            GroundModel.Direction *= -1;
             //向きの調整
-            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x) * Model.Direction, transform.localScale.y, transform.localScale.z);
+            _view.FlipXImage(GroundModel.Direction);
         }
+
+        //壁がないときは何もしない
+    }
+
+    protected override void Fall()
+    {
+        rb2d.velocity = new Vector2(0, GroundModel.Gravity);
+    }
+
+    //BoarではMoving状態のときが走っている状態とする
+    protected override void SetAttack()
+    {
+        GroundModel.Attack = stateCon.HasState(EnemyState.Moving) ? 30 : 18;
+    }
+
+    public async override UniTask Paralysis(float duration)
+    {
+        if (stateCon.HasState(EnemyState.Paralysised)) return;
+
+        stateCon.AddState(EnemyState.Paralysised);
+        //動きの停止
+        stateCon.AddState(EnemyState.Stopped);
+        StopAsyncTasks();
+        rb2d.velocity = Vector2.zero;
+        //速さの低下
+        GroundModel.XSpeed -= 1.5f;
+        //スタン
+        await UniTask.Delay(TimeSpan.FromSeconds(0.3f),
+            cancellationToken: this.GetCancellationTokenOnDestroy());
+        //動きの再開
+        stateCon.DeleteState(EnemyState.Stopped);
+        //麻痺が切れるまでの待機
+        await UniTask.Delay(TimeSpan.FromSeconds(duration),
+            cancellationToken: this.GetCancellationTokenOnDestroy());
+        //速さをもとに戻す
+        stateCon.DeleteState(EnemyState.Paralysised);
+        GroundModel.XSpeed += 1.5f;
+    }
+
+    public async override UniTask Knockback(Vector2 direction, float force)
+    {
+        //動きの停止
+        stateCon.AddState(EnemyState.Stopped);
+        StopAsyncTasks();
+        rb2d.velocity = Vector2.zero;
+        //ノックバック
+        rb2d.AddForce(direction * force, ForceMode2D.Impulse);
+
+        await UniTask.Delay(TimeSpan.FromSeconds(0.5f),
+            cancellationToken: this.GetCancellationTokenOnDestroy());
+        stateCon.DeleteState(EnemyState.Stopped);
     }
 }

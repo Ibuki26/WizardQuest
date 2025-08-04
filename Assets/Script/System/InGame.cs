@@ -1,22 +1,27 @@
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 public class InGame : MonoBehaviour
 {
     [SerializeField] private WizardPresenter _player;
     [SerializeField] private MagicCreatorStatus[] magic;
     [SerializeField] private EnemyPresenter[] enemy;
-    [SerializeField] private BuffEffecter buffEffecter;
 
     void Start()
     {
-        buffEffecter.ManualStart();
+        SkillManager.Instance.SetSkillBase(MyStatusManager.Instance.FetchEquipment());
         _player.ManualStart();
-        _player.SetBuffEffecterToBuffMagic(buffEffecter);
         for (int i = 0; i < enemy.Length; i++)
         {
-            enemy[i].ManualStart();
+            if(enemy[i] != null)
+                enemy[i].ManualStart();
         }
         UIManager.Instance.ManualStart();
+    }
+
+    private void Update()
+    {
+        PlayDataRecorder.Instance.AddPlayTime(Time.deltaTime);
     }
 
     void FixedUpdate()

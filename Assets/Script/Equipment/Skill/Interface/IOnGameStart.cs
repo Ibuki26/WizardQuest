@@ -4,6 +4,6 @@ namespace Skill
 {
     public interface IOnGameStart
     {
-        void OnGameStart(MagicCreator[] magics);
+        void OnGameStart(MagicCreator[] magics, WizardModel model);
     }
 }

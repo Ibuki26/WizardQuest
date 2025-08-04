@@ -17,9 +17,9 @@ public class FireMeteor : ShotMagic, IShotMagicEffect
         rb.velocity = new Vector2(_status.Speed * _model.Direction, speed_y);
     }
 
-    public void Effect(EnemyModel enemyModel)
+    public void Effect(EnemyPresenter _)
     {
-        SetEffectAsync(enemyModel).Forget();
+        SetEffectAsync().Forget();
     }
 
     //画面外に出たときDestroy
@@ -29,7 +29,7 @@ public class FireMeteor : ShotMagic, IShotMagicEffect
     }
 
     //戻り値がvoidの関数内でawaitするための関数
-    private async UniTask SetEffectAsync(EnemyModel enemyModel)
+    private async UniTask SetEffectAsync()
     {
         //敵に当たったとき、アニメーションを開始し動きを止める
         anim.SetBool("hit", true);

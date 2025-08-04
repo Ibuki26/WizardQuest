@@ -5,30 +5,31 @@ using UniRx;
 
 public class HitPointBar : MonoBehaviour
 {
-    private WizardPresenter player;
+    private WizardModel model;
     private Image image;
     private int oldHp; //前のHitpoint
 
-    public void ManualStart(WizardPresenter player)
+    public void ManualStart(WizardModel model)
     {
-        this.player = player;
+        this.model = model;
         image = GetComponent<Image>();
-        oldHp = player.Model.HitPoint.Value;
+        oldHp = model.HitPoint.Value;
         Bind();
+        Debug.Log("first HP : " + oldHp);
     }
 
     //プレイヤーの体力が変化したときの処理を登録
     private void Bind()
     {
-        player.Model.HitPoint
+        model.HitPoint
             .Subscribe(value =>
             {
                     //HitPointが減った処理
                     if (value < oldHp)
-                    DecreaseBar(value);
+                        DecreaseBar(value);
                     //HitPointが増えた処理
                     else if (value > oldHp)
-                    IncreaseBar(value);
+                        IncreaseBar(value);
 
                 oldHp = value;
             })
@@ -37,13 +38,17 @@ public class HitPointBar : MonoBehaviour
 
     private void IncreaseBar(int currentHp)
     {
+        //現在のアニメーションを停止
+        image.DOKill();
         //増えたHitpointが多い程、Barの移動速が速いように計算
-        image.DOFillAmount((float)currentHp / player.Model.MaxHitPoint, (float)oldHp / currentHp * 10);
+        image.DOFillAmount((float)currentHp / model.MaxHitPoint, (float)oldHp / currentHp);
     }
 
     private void DecreaseBar(int currentHp)
     {
+        //現在のアニメーションを停止
+        image.DOKill();
         //減ったHitpointが多い程、Barの移動速が速いように計算
-        image.DOFillAmount((float)currentHp / player.Model.MaxHitPoint, (float)currentHp / oldHp);
+        image.DOFillAmount((float)currentHp / model.MaxHitPoint, (float)currentHp / oldHp);
     }
 }

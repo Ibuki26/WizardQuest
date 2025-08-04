@@ -12,18 +12,31 @@ public class WizardModel
     private int _direction; //向いている方向
     private Vector2 _playerVelocity; //Rigidbody2Dに代入する値
 
-    private float standardSpeed = 4.0f; //x方向の移動速度の基準値
+    private float standardSpeed = 3f; //x方向の移動速度の基準値
 
-    public WizardModel(int hp, int strength, int defense, float speed, float jump)
+    public WizardModel(WizardModelData data)
     {
-        HitPoint = new ReactiveProperty<int>(hp);
-        _strength = strength;
-        _defense = defense;
-        _speed = speed;
-        _jump = jump;
-        _maxHitPoint = hp;
+        HitPoint = new ReactiveProperty<int>(data.hitPoint);
+        _strength = data.strength;
+        _defense = data.defense;
+        _speed = data.speed;
+        _jump = data.jump;
+        _maxHitPoint = data.hitPoint;
         _direction = 1;
         _playerVelocity = Vector2.zero;
+    }
+
+    //装備のステータスをプレイヤーに加算する関数
+    public void AddEquipmentStatus(Equipment equipment)
+    {
+        //装備が無い場合は実行しない
+        if (equipment == null) return;
+
+        HitPoint.Value += equipment.hitPoint;
+        _strength += equipment.strength;
+        _defense += equipment.defense;
+        _speed += equipment.speed;
+        _maxHitPoint += equipment.hitPoint;
     }
 
     #region getter,setter
@@ -139,19 +152,16 @@ public class WizardModel
     //プレイヤーのx方向の速度の計算
     public float RunSpeed(float speed, int direction)
     {
-        return standardSpeed * (speed / 100) * direction;
+        return (0.025f * speed + standardSpeed) * direction;
     }
 
     //プレイヤーが敵キャラからダメージを受けるときの計算
     public int CalculateDamage(int attack, int strenght)
     {
-        int result = attack + strenght / 5 - _defense / 10;
+        int result = (attack + strenght) / 2 - _defense / 3;
 
         //ダメ―ジ量が正の値ならそのまま返し、負の値なら0を返す
-        if (result >= 0)
-            return result;
-        else
-            return 0;
+        return (result > 0) ? result : 0;
     }
 
     //体力-ダメージが正の値か負の値か確かめる

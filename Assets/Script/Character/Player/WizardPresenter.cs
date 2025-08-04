@@ -7,12 +7,10 @@ using System.Linq;
 public class WizardPresenter : MonoBehaviour
 {
     //初期値の登録
-    [SerializeField] private int hitPoint;
-    [SerializeField] private int strength;
-    [SerializeField] private int defense;
-    [SerializeField] private float speed;
-    [SerializeField] private float jump;
-    [SerializeField] private GameObject overWindow;
+    [SerializeField] private WizardModelData data;
+    [SerializeField] private BuffEffecter buffEffecter;
+    [SerializeField] private GameObject option;
+    [SerializeField] private GameObject opButton;
 
     private WizardModel _model;
     private WizardView _view;
@@ -24,25 +22,10 @@ public class WizardPresenter : MonoBehaviour
 
     private float gravity = -6; //落下時のy方向の速度
     private float adjustRaycast_y = 0.005f; //Raycastをするときの発生座標の調整用数値
-    private float jumpLimit = 0.7f; //ジャンプする限界時間
+    private float jumpLimit = 0.5f; //ジャンプする限界時間
 
     public WizardModel Model => _model;
     public MagicCreator[] Magics => magics;
-
-    private void SetM()
-    {
-        //魔法のセット
-        magics[0] = MagicCreator.Initialize(MyStatus.Instance.magics[0], Instantiate);
-        magics[1] = MagicCreator.Initialize(MyStatus.Instance.magics[1], Instantiate);
-    }
-
-    public void SetBuffEffecterToBuffMagic(BuffEffecter buffEffecter)
-    {
-        foreach (var buff in magics.OfType<BuffMagicCreator>())
-        {
-            buff.Initialize(buffEffecter);
-        }
-    }
 
     private void Awake()
     {
@@ -51,19 +34,34 @@ public class WizardPresenter : MonoBehaviour
 
     public void ManualStart()
     {
-        _model = new WizardModel(hitPoint, strength, defense, speed, jump);
+        _model = new WizardModel(data);
         _view = GetComponent<WizardView>();
         rb = GetComponent<Rigidbody2D>();
         _view.ManualStart();
-        stateCon = GetComponent<WizardStateController>();
-        stateCon.SetState(WizardState.Standing);
+        stateCon = new WizardStateController();
         ground = GetComponent<GroundChecker>();
 
         //Magicの取得
-        SetM();
+        for(int i = 0; i < 2; i++)
+        {
+            magics[i] = MagicCreator.Initialize(MyStatusManager.Instance.FetchMagic()[i], Instantiate);
+        }
         //装備のゲーム開始スキル起動
-        SkillManager.Instance.TriggerOnGameStart(magics);
-        //UIへの情報の送信　いるか不明
+        buffEffecter.ManualStart();
+        foreach (var buff in magics.OfType<BuffMagicCreator>())
+        {
+            //BuffEffecterクラスへAnimatorの登録
+            buff.Initialize(buffEffecter);
+        }
+        SkillManager.Instance.TriggerOnGameStart(magics, _model);
+        //装備のステータスの適応
+        foreach (var equipment in MyStatusManager.Instance.FetchEquipment())
+        {
+            _model.AddEquipmentStatus(equipment);
+            Debug.Log("1 HP : " + _model.HitPoint + ", Strength : " + _model.Strength + ", Defense : " + _model.Defense + ", Speed : " + _model.Speed);
+        }
+
+        Debug.Log("HP : " + _model.HitPoint + ", Strength : " + _model.Strength + ", Defense : " + _model.Defense + ", Speed : " + _model.Speed);
     }
 
     public void ManualFixedUpdate()
@@ -83,6 +81,7 @@ public class WizardPresenter : MonoBehaviour
         _playerInput.onActionTriggered += OnMove;
         _playerInput.onActionTriggered += OnJump;
         _playerInput.onActionTriggered += OnMagic;
+        _playerInput.onActionTriggered += OnOption;
     }
 
     //PlayerInputへの関数登録の解除
@@ -93,26 +92,29 @@ public class WizardPresenter : MonoBehaviour
         _playerInput.onActionTriggered -= OnMove;
         _playerInput.onActionTriggered -= OnJump;
         _playerInput.onActionTriggered -= OnMagic;
+        _playerInput.onActionTriggered -= OnOption;
     }
 
     private void OnMove(InputAction.CallbackContext context)
     {
         if (context.action.name != "Move") return;
 
+        //x軸方向の入力情報の取得
+        float xAxis = context.ReadValue<Vector2>().x;
         //スティックに触っていないときの処理
-        if (context.canceled)
+        if (Mathf.Abs(xAxis) < 0.1f)
         {
             _view.SetAnimation("isRun", false);
             Model.PlayerVelocityX = 0f;
             return;
         }
 
-        //x軸方向の入力情報の取得
-        float xAxis = context.ReadValue<Vector2>().x;
-
         //進行方向の記録と画像の向き調整
         _model.Direction = (xAxis > 0) ? 1 : -1;
         transform.localScale = new Vector3(0.35f * _model.Direction, 0.35f, 1);
+
+        //方向転換回数の記録
+        PlayDataRecorder.Instance.CheckTurn(_model.Direction);
 
         //BuffEffecterの向きの調整
         foreach (var buff in magics.OfType<BuffMagicCreator>())
@@ -120,8 +122,10 @@ public class WizardPresenter : MonoBehaviour
             buff.Status.Magic.SetBuffEffecterSpriteFlip(_model.Direction);
         }
 
+        PlayDataRecorder.Instance.AddMoveLength(_model.RunSpeed(_model.Speed, 1)*Time.fixedDeltaTime);
+        
         _view.SetAnimation("isRun", true);
-        Model.PlayerVelocityX = Model.RunSpeed(Model.Speed, Model.Direction);
+       _model.PlayerVelocityX = _model.RunSpeed(_model.Speed, _model.Direction);
     }
 
     public async void OnJump(InputAction.CallbackContext context)
@@ -131,6 +135,8 @@ public class WizardPresenter : MonoBehaviour
 
         if (stateCon.HasState(WizardState.Standing))
         {
+            PlayDataRecorder.Instance.AddJump();
+
             //ジャンプを始める処理
             AudioManager.Instance.PlaySE(AudioType.jump);
             _view.SetAnimation("isJump", true);
@@ -154,6 +160,8 @@ public class WizardPresenter : MonoBehaviour
         //魔法実行中とクールタイム中のときは実行しない
         if (stateCon.HasState(WizardState.Magicing) || magics[magicNum].IsCoolTime) return;
 
+        PlayDataRecorder.Instance.AddCastCount(magicNum);
+
         stateCon.AddState(WizardState.Magicing);
         _view.SetAnimTrigger("attack");
 
@@ -169,6 +177,16 @@ public class WizardPresenter : MonoBehaviour
         stateCon.DeleteState(WizardState.Magicing);
     }
 
+    private void OnOption(InputAction.CallbackContext context)
+    {
+        if (context.phase != InputActionPhase.Performed
+            || context.action.name != "OpenWindow") return;
+
+        UIManager.Instance.ShowOption();
+        _playerInput.actions.Disable();
+        _playerInput.actions.FindActionMap("UI");
+    }
+
     public async UniTask DamageFromEnemy(int enemyAttack, int enemyStrength)
     {
         //ダメージ無視状態中と魔法使用中はダメージを受けない
@@ -181,9 +199,15 @@ public class WizardPresenter : MonoBehaviour
 
         //ダメージ量の計算
         var damage = Model.CalculateDamage(enemyAttack, enemyStrength);
+        Debug.Log("damage : " + damage);
+        //ダメージ量の記録
+        PlayDataRecorder.Instance.AddTotalDamage(damage);
+        PlayDataRecorder.Instance.AddDamageCount();
         //体力-ダメージ量が負の値になったら0、そうでないなら体力-ダメージ量をそのまま代入
         _model.HitPoint.Value = _model.DecreaseHitPoint(damage);
         Die();
+
+        SkillManager.Instance.TriggerOnDamage(_model);
 
         //ダメージ演出
         AudioManager.Instance.PlaySE(AudioType.damage_player);
@@ -207,7 +231,12 @@ public class WizardPresenter : MonoBehaviour
         stateCon.AddState(WizardState.IgnoreDamage);
 
         _model.HitPoint.Value = _model.DecreaseHitPoint(damage);
+        //ダメージ量の記録
+        PlayDataRecorder.Instance.AddTotalDamage(damage);
+        PlayDataRecorder.Instance.AddDamageCount();
         Die();
+
+        SkillManager.Instance.TriggerOnDamage(_model);
 
         //ダメージ演出
         AudioManager.Instance.PlaySE(AudioType.damage_player);
@@ -224,6 +253,8 @@ public class WizardPresenter : MonoBehaviour
     {
         //今の体力と回復値を足して、上限値を超えたら上限値を代入、そうでないなら体力+回復値を代入
         _model.HitPoint.Value = Model.IncreaseHitPoint(healPoint);
+
+        SkillManager.Instance.TriggerOnHeal(_model);
     }
 
     private void Die()
@@ -238,9 +269,9 @@ public class WizardPresenter : MonoBehaviour
         Model.PlayerVelocity = Vector2.zero;
         _view.SetAnimTrigger("die");
         //ゲームオーバー画面の表示
+        UIManager.Instance.ShowGameOver();
         _playerInput.actions.Disable();
         _playerInput.actions.FindActionMap("UI");
-        overWindow.SetActive(true);
     }
 
     //地面と接しているかの判定

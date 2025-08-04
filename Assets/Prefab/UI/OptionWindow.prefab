@@ -574,7 +574,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3411108515900625097}
-  - component: {fileID: 6958678394122532757}
   - component: {fileID: 4716533881404472673}
   m_Layer: 5
   m_Name: OptionWindow
@@ -604,23 +603,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &6958678394122532757
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4218383056804944917}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d85381ca680b343429ad826bd56bad9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttons:
-  - {fileID: 5996658614410734615}
-  - {fileID: 4324977654466837300}
-  - {fileID: 5407509770948074997}
-  - {fileID: 7445979364194514950}
 --- !u!114 &4716533881404472673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -633,7 +615,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df4f5939d5e36324dbf4e803e9ff1616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  array: {fileID: 6958678394122532757}
   actionRef: {fileID: -1574837692671693998, guid: 0e17c2d0e82ae8f43a866cff8691a531, type: 3}
   actionRef2: {fileID: 6319529546141582885, guid: 0e17c2d0e82ae8f43a866cff8691a531, type: 3}
 --- !u!1 &4277537515092671742
@@ -1079,8 +1060,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneName: ModeSelect
-  type: 0
-  reset: 1
 --- !u!1 &5831497650258857681
 GameObject:
   m_ObjectHideFlags: 0
@@ -1588,7 +1567,6 @@ GameObject:
   - component: {fileID: 7584014373386740237}
   - component: {fileID: 93727514929815430}
   - component: {fileID: 3899316507968739184}
-  - component: {fileID: 9029478682561722540}
   - component: {fileID: 6999763057709690571}
   m_Layer: 5
   m_Name: CloseButton
@@ -1698,19 +1676,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &9029478682561722540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7445979364194514950}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 273e7b23990fc54448d91ad059945238, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  modeOperator: {fileID: 0}
 --- !u!114 &6999763057709690571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1728,7 +1693,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 9029478682561722540}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: CloseWindowButtonForUI, Assembly-CSharp
           m_MethodName: OnCursorEnter
           m_Mode: 1
