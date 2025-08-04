@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4823241385111576013}
   - component: {fileID: 2154933728595081769}
   - component: {fileID: 8730071243420772143}
+  - component: {fileID: -2101175480386338349}
   m_Layer: 6
   m_Name: Boar
   m_TagString: Untagged
@@ -80,7 +81,7 @@ SpriteRenderer:
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 8ca8af5d8b13ca24bbcd3d0359cb23eb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 1
+  m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 0.64, y: 0.64}
@@ -104,7 +105,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -148,10 +149,10 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.34}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0}
     oldSize: {x: 0.64, y: 0.64}
     newSize: {x: 0.64, y: 0.64}
     adaptiveTilingThreshold: 0.5
@@ -186,14 +187,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f4ab747e802a7542bb72be93f30dd1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 70
-  strength: 50
-  defense: 40
-  xSpeed: 1
-  ySpeed: 0
-  moveSpeed: 0.5
+  hp: 65
+  strength: 45
+  defense: 60
   score: 350
   direction: -1
+  speed: 3
+  moveTime: 0
+  gravity: -4
+  upValue: 2
 --- !u!114 &8730071243420772143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,7 +208,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 907487a0129354549b2ae56a551fad9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _self: {fileID: 7946001472884978445}
   _target: {fileID: 0}
   _sightAngle: 60
-  _maxDistance: 4
+  _maxDistance: 6
+--- !u!114 &-2101175480386338349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3910833090991249202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aed48e7fb94a1241bfe32aa231c0aaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

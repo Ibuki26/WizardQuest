@@ -3,7 +3,7 @@ using UnityEngine;
 public class EnemySightChecker : MonoBehaviour
 {
     // 自分自身
-    [SerializeField] private Transform _self;
+    private Transform _self;
 
     // ターゲット
     [SerializeField] private Transform _target;
@@ -14,13 +14,16 @@ public class EnemySightChecker : MonoBehaviour
     // 視界の最大距離
     [SerializeField] private float _maxDistance = float.PositiveInfinity;
 
+    public void Initialize()
+    {
+        _self = GetComponent<Transform>();
+    }
+
     /// <summary>
     /// ターゲットが見えているかどうか
     /// </summary>
-    public void IsVisible(EnemyPresenter enemy)
+    public bool IsVisible(EnemyModel model)
     {
-        if (!enemy.Model.CurrentState.HasFlag(EnemyControlState.OnCamera) || enemy.Model.HitPoint == 0) return;
-
         // 自身の位置
         Vector2 selfPos = _self.position;
         // ターゲットの位置
@@ -28,7 +31,7 @@ public class EnemySightChecker : MonoBehaviour
 
         // 自身の向き（正規化されたベクトル）
         // この例では右向きを正面とする
-        Vector2 selfDir = new Vector2(enemy.Model.Direction, 0);
+        Vector2 selfDir = new Vector2(model.Direction, 0);
 
         // ターゲットまでの向きと距離計算
         var targetDir = targetPos - selfPos;
@@ -43,8 +46,8 @@ public class EnemySightChecker : MonoBehaviour
 
         // 視界判定
         if (innerProduct > cosHalf && targetDistance < _maxDistance)
-            enemy.Model.CurrentState |= EnemyControlState.FindPlayer;
+            return true;
         else
-            enemy.Model.CurrentState &= ~EnemyControlState.FindPlayer;
+            return false;
     }
 }

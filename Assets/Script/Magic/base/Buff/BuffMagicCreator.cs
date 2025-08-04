@@ -21,6 +21,7 @@ public class BuffMagicCreator : MagicCreator
     private async UniTask SetCreateMagicAsync(WizardModel model, int num)
     {
         if (IsCoolTime) return;
+
         IsCoolTime = true;
         //ñÇñ@ÇÃê∂ê¨Ç∆SEçƒê∂
         AudioManager.Instance.PlaySE(_status.ShotSound);

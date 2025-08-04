@@ -16,9 +16,12 @@ public class Paralysis : ShotMagic, IShotMagicEffect
         SetActionAsync().Forget();
     }
 
-    public void Effect(EnemyModel enemyModel)
+    public void Effect(EnemyPresenter enemy)
     {
-        SetEffectAsync(enemyModel).Forget();
+        if (enemy.Model.HitPoint != 0)
+            SetEffectAsync(enemy).Forget();
+        else
+            Destroy(gameObject);
     }
 
     //戻り値がvoidの関数内でawaitするための関数
@@ -35,20 +38,21 @@ public class Paralysis : ShotMagic, IShotMagicEffect
     }
 
     //戻り値がvoidの関数内でawaitするための関数
-    private async UniTask SetEffectAsync(EnemyModel enemyModel)
+    private async UniTask SetEffectAsync(EnemyPresenter enemy)
     {
         //Actionのawaitをキャンセル
         cts?.Cancel();
         cts?.Dispose();
         hasDispose = true;
 
+        GetComponent<Collider2D>().enabled = false;
         //音声再生とアニメーションの再生
         AudioManager.Instance.PlaySE(AudioType.paralysis);
         rb.velocity = Vector2.zero;
         anim.SetBool("hit", true);
 
         //Enemyの動きを止める
-        //enemy.Stop(3.0f).Forget();
+        enemy.Paralysis(3f).Forget();
 
         //アニメーションが終わるまで待機
         await UniTask.WaitUntil(() =>

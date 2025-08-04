@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 498632aa89393804d9b8162338f3b1d5, type: 3}
+  m_Name: Slash
+  m_EditorClassIdentifier: 
+  magicName: "\u30B9\u30E9\u30C3\u30B7\u30E5"
+  coolTime: 1.6
+  destroyTime: 0.5
+  shotShoumd: 19
+  image: {fileID: 21300000, guid: 3b1c7acaca879db4b80633f6369d2843, type: 3}
+  magic: {fileID: 7673891399978881863, guid: 1ab6d4d1249842746b650dda641f8ac9, type: 3}
+  adjustCreatePosition: {x: 1.5, y: 0.8, z: 0}
+  attack: 50
+  speed: 0

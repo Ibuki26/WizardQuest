@@ -37,6 +37,8 @@ public class ShotMagicCreator : MagicCreator
         //Instantiate関数による魔法の生成
         var generatedObject = Func?.Invoke(_status.Magic.gameObject, adjustPosition, Quaternion.identity);
         var generatedMagic = generatedObject.GetComponent<ShotMagic>();
+        //スキルの実行
+        SkillManager.Instance.TriggerOnMagicCast(generatedObject);
         //初期設定と生成時処理の実行
         generatedMagic.Initialize(_status, model);
         generatedObject.GetComponent<SpriteRenderer>().flipX = (model.Direction > 0) ? false : true;

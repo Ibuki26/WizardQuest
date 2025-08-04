@@ -1,142 +1,153 @@
 using UnityEngine;
-using DG.Tweening;
 using Cysharp.Threading.Tasks;
 using System;
 
-public class Slime : EnemyPresenter
+public class Slime : GroundMovingEnemyPresenter
 {
-    private RaycastHit2D standHit, hit, hit2;
+    [SerializeField] private float ySpeed;
+    //Raycastの調整用数値
+    private float adjustRaycastGround = 0.05f;
+    private float adjustRaycastWall_x = 0.5f;
+    private float adjustRaycastWall_y = 0.35f;
 
-    private float adjustRaycastWall_x = 0.45f;
-    private float adjustRaycastGround_y = 0.27f;
-    private float gravity = -1.0f;
-
-    public override void ManualFixedUpdate()
+    protected override void Move()
     {
-        IsGround();
-        CheckJumpToGround();
-        CheckWall();
-        AdjustVelocity_y();
-        SetAttck();
-        Move();
+        SetMoveAsync().Forget();
     }
 
-    private void Move()
+    private async UniTask SetMoveAsync()
     {
-        if (Model.CurrentState.HasFlag(EnemyControlState.Moving)
-            || !Model.CurrentState.HasFlag(EnemyControlState.Standing)
-            || !Model.CurrentState.HasFlag(EnemyControlState.OnCamera)
-            || Model.CurrentState.HasFlag(EnemyControlState.Stopped)
-            || Model.HitPoint == 0) return;
+        if (stateCon.HasState(EnemyState.Moving)
+            || !stateCon.HasState(EnemyState.Standing)) return;
 
-        Model.CurrentState |= EnemyControlState.Moving;
-        //移動する距離の計算 ジャンプして戻るためXSpeedを2倍する
-        var movedPosition_x = Model.XSpeed * Model.Direction * 2;
-        Tween = transform.DOJump(transform.position + new Vector3(movedPosition_x, 0, 0), Model.YSpeed, 1, Model.MoveSpeed, false)
-            //DoTweenアニメーション終了後に呼び出し
-            .OnComplete(async () =>
-            {
-                var token = this.GetCancellationTokenOnDestroy();
-                await UniTask.Delay(TimeSpan.FromSeconds(0.3f), cancellationToken: token);
-                Model.CurrentState &= ~EnemyControlState.Moving;
-            });
+        stateCon.AddState(EnemyState.Moving);
+        //山なりの移動の上昇部分
+        rb2d.velocity = new Vector2(GroundModel.XSpeed * GroundModel.Direction, ySpeed);
+        await WaitAction(GroundModel.MoveTime / 2);
+        //山なりの移動の下降部分
+        rb2d.velocity = new Vector2(GroundModel.XSpeed * GroundModel.Direction, -ySpeed);
+        await WaitAction(GroundModel.MoveTime / 2);
+        //一定時間停止
+        rb2d.velocity = Vector2.zero;
+        await WaitAction(0.5f);
+        stateCon.DeleteState(EnemyState.Moving);
     }
 
-    public override void StopOrder(float stopTime)
+    protected override void CheckGround()
     {
-        Tween.Kill();
-    }
-
-    public void SetAttck()
-    {
-        if (Model.CurrentState.HasFlag(EnemyControlState.Moving))
-            Model.Attack = 20;
-        else
-            Model.Attack = 10;
-    }
-
-    public void AdjustVelocity_y()
-    {
-        //Dieの処理と被る可能性があるため。体力が0のときは実行しない
-        if (Model.HitPoint == 0) return;
-
-        //移動中ではなく、接地していないとき速度を-4にして落とす
-        if (!Model.CurrentState.HasFlag(EnemyControlState.Moving)
-            && !Model.CurrentState.HasFlag(EnemyControlState.Standing))
-        {
-            RB.velocity = new Vector2(0, gravity);
-        }
-
-        if (Model.CurrentState.HasFlag(EnemyControlState.Standing) && RB.velocity.y < 0)
-        {
-            RB.velocity = Vector2.zero;
-        }
-    }
-
-    //地面と接しているかの判定
-    private void IsGround()
-    {
-        standHit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - adjustRaycastGround_y), Vector2.down, 0.01f);
-        Debug.DrawRay(new Vector2(transform.position.x, transform.position.y - adjustRaycastGround_y), Vector2.down * 0.01f, Color.red);
+        var adjustPosition = new Vector2(transform.position.x, transform.position.y - adjustRaycastGround);
         //地面と接しているとき
-        if (standHit.collider != null && !standHit.collider.isTrigger)
+        if (RaycastHelper.CheckGroundAndWalls(adjustPosition, Vector2.down, 0.05f, Color.red))
         {
-            Model.CurrentState |= EnemyControlState.Standing;
+            stateCon.AddState(EnemyState.Standing);
             return;
         }
 
-        Model.CurrentState &= ~EnemyControlState.Standing;
+        //地面と接していないとき
+        stateCon.DeleteState(EnemyState.Standing);
+
+        //地面と接触していなくて移動中でもないとき落下
+        if (!stateCon.HasState(EnemyState.Moving))
+            Fall();
+
         return;
     }
 
-    //移動先に地面があるかの確認
-    private void CheckJumpToGround()
+    protected override void CheckGroundToTurn()
     {
-        if (Model.CurrentState.HasFlag(EnemyControlState.Moving)
-            || !Model.CurrentState.HasFlag(EnemyControlState.Standing)
-            || !Model.CurrentState.HasFlag(EnemyControlState.OnCamera)
-            || Model.CurrentState.HasFlag(EnemyControlState.Stopped)
-            || Model.HitPoint == 0) return;
+        if (stateCon.HasState(EnemyState.Moving)
+            || !stateCon.HasState(EnemyState.Standing)) return;
 
         //Raycastの発生位置の調整
-        var adjustPosition_x = transform.position.x + Model.XSpeed * 2 * Model.Direction;
-        hit = Physics2D.Raycast(new Vector2(adjustPosition_x, transform.position.y - adjustRaycastGround_y), Vector2.down, 0.05f);
-        Debug.DrawRay(new Vector2(adjustPosition_x, transform.position.y - adjustRaycastGround_y), Vector2.down * 0.05f, Color.red);
+        var adjustPosition_x = transform.position.x + GroundModel.XSpeed * GroundModel.MoveTime * GroundModel.Direction;
+        var adjustPosition_y = transform.position.y - adjustRaycastGround;
         //地面があったとき
-        if (hit.collider != null && !hit.collider.isTrigger)
+        if (RaycastHelper.CheckGroundAndWalls(new Vector2(adjustPosition_x, adjustPosition_y), Vector2.down, 0.1f, Color.red))
         {
             return;
         }
 
         //何もなかったとき
-        Model.Direction *= -1;
+        GroundModel.Direction *= -1;
     }
 
-    //移動方向に壁があるかの確認
-    private void CheckWall()
+    protected override void CheckWallToTurn()
     {
-        if (Model.CurrentState.HasFlag(EnemyControlState.Moving)
-            || !Model.CurrentState.HasFlag(EnemyControlState.Standing)
-            || !Model.CurrentState.HasFlag(EnemyControlState.OnCamera)
-            || Model.CurrentState.HasFlag(EnemyControlState.Stopped)
-            || Model.HitPoint == 0) return;
+        if (stateCon.HasState(EnemyState.Moving)
+            || !stateCon.HasState(EnemyState.Standing)) return;
 
         //Raycastの発生位置の調整
-        var adjustPosition_x = transform.position.x + adjustRaycastWall_x * Model.Direction;
-        var direction = new Vector2(Model.Direction, 0);
-        hit2 = Physics2D.Raycast(new Vector2(adjustPosition_x, transform.position.y), direction, Model.XSpeed * 2 + 0.4f);
-        Debug.DrawRay(new Vector2(adjustPosition_x, transform.position.y), direction * (Model.XSpeed * 2 + 0.4f), Color.red);
-        //他オブジェクトにぶつかったとき
-        if (hit2.collider != null && !hit2.collider.isTrigger)
+        var adjustPosition_x = transform.position.x + adjustRaycastWall_x * GroundModel.Direction;
+        var adjustPosition_y = transform.position.y + adjustRaycastWall_y;
+        var direction = new Vector2(GroundModel.Direction, 0);
+        var distance = GroundModel.XSpeed * GroundModel.MoveTime + 0.4f;
+        //壁があるとき
+        if (RaycastHelper.CheckGroundAndWalls(new Vector2(adjustPosition_x, adjustPosition_y), direction, distance, Color.red))
         {
-            //ぶつかったオブジェクトが他EnemyかPlayerのときは無視
-            if (hit2.collider.TryGetComponent<EnemyPresenter>(out _) ||
-                hit2.collider.TryGetComponent<WizardPresenter>(out _))
-            {
-                return;
-            }
-
-            Model.Direction *= -1;
+            GroundModel.Direction *= -1;
         }
+
+        //壁がないときは何もしない
+    }
+
+    protected override void Fall()
+    {
+        rb2d.velocity = new Vector2(0, GroundModel.Gravity);
+    }
+
+    protected override void SetAttack()
+    {
+        GroundModel.Attack = stateCon.HasState(EnemyState.Moving) ? 30 : 20;
+    }
+
+    //スライムのParalysisは時間を自由にすると移動中に速度が変わり変な挙動になるため固定
+    public async override UniTask Paralysis(float _)
+    {
+        if (stateCon.HasState(EnemyState.Paralysised)) return;
+
+        //計算と元に戻す用の数値
+        var beforeXSpeed = GroundModel.XSpeed;
+        var beforeMoveTime = GroundModel.MoveTime;
+        var beforeYSpeed = ySpeed;
+
+        stateCon.AddState(EnemyState.Paralysised);
+        //動きの停止
+        stateCon.AddState(EnemyState.Stopped);
+        StopAsyncTasks();
+        Fall();
+        //速さの低下
+        GroundModel.XSpeed -= 1f;
+        GroundModel.MoveTime = beforeXSpeed * beforeMoveTime / GroundModel.XSpeed;
+        ySpeed = beforeYSpeed * beforeMoveTime / GroundModel.MoveTime;
+        //スタン
+        await UniTask.Delay(TimeSpan.FromSeconds(0.5f),
+            cancellationToken: this.GetCancellationTokenOnDestroy());
+        //動きの再開
+        stateCon.DeleteState(EnemyState.Stopped);
+        //麻痺が切れるまでの待機
+        await UniTask.Delay(TimeSpan.FromSeconds(beforeMoveTime + 0.5f),
+            cancellationToken: this.GetCancellationTokenOnDestroy());
+        //速さをもとに戻す
+        stateCon.DeleteState(EnemyState.Paralysised);
+        GroundModel.XSpeed = beforeXSpeed;
+        GroundModel.MoveTime = beforeMoveTime;
+        ySpeed = beforeYSpeed;
+    }
+
+    public async override UniTask Knockback(Vector2 direction, float force)
+    {
+        //動きの停止
+        stateCon.AddState(EnemyState.Stopped);
+        StopAsyncTasks();
+        Fall();
+        await UniTask.WaitUntil(() => stateCon.HasState(EnemyState.Standing),
+            cancellationToken : this.GetCancellationTokenOnDestroy());
+        rb2d.velocity = Vector2.zero;
+        //ノックバック
+        rb2d.AddForce(direction * force, ForceMode2D.Impulse);
+
+        await UniTask.Delay(TimeSpan.FromSeconds(0.5f),
+            cancellationToken: this.GetCancellationTokenOnDestroy());
+        stateCon.DeleteState(EnemyState.Stopped);
     }
 }

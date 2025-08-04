@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 9217570165814091368}
   - component: {fileID: 141968862074360591}
   - component: {fileID: 3300438849825271146}
-  - component: {fileID: 4664946980337242065}
+  - component: {fileID: 8715344694571739252}
   - component: {fileID: 9141336551591909352}
+  - component: {fileID: -5214319375673206490}
   m_Layer: 6
   m_Name: Slime
   m_TagString: Untagged
@@ -103,7 +104,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -147,10 +148,10 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.02}
+  m_Offset: {x: 0, y: 0.18}
   m_SpriteTilingProperty:
     border: {x: 0.06, y: 0, z: 0.06, w: 0.25}
-    pivot: {x: 0.5, y: 0.27}
+    pivot: {x: 0.5, y: 0}
     oldSize: {x: 0.64, y: 0.64}
     newSize: {x: 0.64, y: 0.64}
     adaptiveTilingThreshold: 0.5
@@ -160,7 +161,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.46, y: 0.32}
   m_EdgeRadius: 0.035
---- !u!114 &4664946980337242065
+--- !u!114 &8715344694571739252
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -172,7 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2656854c5b81aae4194603f6a6090abb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageColor: {r: 1, g: 0.40000004, b: 1, a: 1}
+  damageColor: {r: 1, g: 0.34509805, b: 0.34509805, a: 1}
 --- !u!114 &9141336551591909352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,11 +186,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ad58c9d716eac44c88bba076f08417e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 40
-  strength: 40
+  hp: 60
+  strength: 30
   defense: 40
-  xSpeed: 1
-  ySpeed: 1
-  moveSpeed: 1.6
   score: 200
-  direction: 1
+  direction: -1
+  speed: 2
+  moveTime: 1
+  gravity: -4
+  ySpeed: 1
+--- !u!114 &-5214319375673206490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1962364383756181822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aed48e7fb94a1241bfe32aa231c0aaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

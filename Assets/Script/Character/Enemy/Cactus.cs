@@ -4,80 +4,110 @@ using System;
 
 public class Cactus : EnemyPresenter
 {
-    [SerializeField] private CactusNeedle needle;
+    [SerializeField] private GameObject needle;
     [SerializeField] private WizardPresenter player;
-    [SerializeField] private Sprite[] sprites;
     private EnemySightChecker esc;
-    private SpriteRenderer sr;
-    private int shotCount = 0;
+    private int shotCount = 0; //撃った回数
 
     public override void ManualStart()
     {
         base.ManualStart();
         esc = GetComponent<EnemySightChecker>();
-        sr = GetComponent<SpriteRenderer>();
-        Model.Attack = 20;
+        esc.Initialize();
+        _view.FlipXImage(_model.Direction);
+        SetAttack();
     }
 
     public override void ManualFixedUpdate()
-    {
+    {//画面外にいるときと体力が0のときは実行しない
+        if (!stateCon.HasState(EnemyState.OnCamera)
+            || stateCon.HasState(EnemyState.Stopped)
+            || _model.HitPoint == 0) return;
+
         //プレイヤーとの位置の比較
         CheckPlayer();
-        //プレイヤーが視界に入っているかの確認
-        esc.IsVisible(this);
         //トゲの発射
         ShotNeedle().Forget();
     }
 
+    protected override void SetAttack()
+    {
+        _model.Attack = 18;
+    }
+
+    //トゲを打つ関数
     private async UniTask ShotNeedle()
     {
-        if (Model.CurrentState.HasFlag(EnemyControlState.Moving)
-            || !Model.CurrentState.HasFlag(EnemyControlState.OnCamera)
-            || Model.CurrentState.HasFlag(EnemyControlState.Stopped)
-            || !Model.CurrentState.HasFlag(EnemyControlState.FindPlayer)
-            || Model.HitPoint == 0) return;
+        if (stateCon.HasState(EnemyState.Moving)
+            || stateCon.HasState(EnemyState.Stopped)
+            || !esc.IsVisible(_model)) return;
 
-        Model.CurrentState |= EnemyControlState.Moving;
+        stateCon.AddState(EnemyState.Moving);
         if (shotCount != 3)
         {
             shotCount++;
             AudioManager.Instance.PlaySE(AudioType.needle);
+            _view.SetAnimatorInt("shot", shotCount);
             //player.transform.positionはプレイヤーの足元なので胴体を狙うようにnew Vector3で調整
-            needle.CreateNeedle(player.transform.position + new Vector3(0, 0.7f, 0), this);
-            sr.sprite = sprites[shotCount];
+            CreateNeedle(player.transform.position + new Vector3(0, 0.7f, 0));
         }
         else
         {
             shotCount = 0;
-            sr.sprite = sprites[0];
+            _view.SetAnimatorInt("shot", shotCount);
         }
-        await UniTask.Delay(TimeSpan.FromSeconds(2f),
-            cancellationToken: this.GetCancellationTokenOnDestroy());
-        Model.CurrentState &= ~EnemyControlState.Moving;
+        //打ったら待つ
+        await WaitAction(2f);
+
+        stateCon.DeleteState(EnemyState.Moving);
+    }
+
+    //ターゲットを受け取ってトゲを生成する関数
+    public void CreateNeedle(Vector2 target)
+    {
+        //撃つ方向と速度の計算
+        var myVelocity = new Vector2(target.x - transform.position.x, target.y - transform.position.y).normalized * 3f;
+        var angle = Mathf.Atan2(myVelocity.x, myVelocity.y);
+
+        var createdNeedle = Instantiate(needle, transform.position, Quaternion.Euler(0, 0, -angle * Mathf.Rad2Deg));
+        createdNeedle.GetComponent<Rigidbody2D>().velocity = myVelocity;
+        createdNeedle.GetComponent<CactusNeedle>().Strength = _model.Strength;
     }
 
     private void CheckPlayer()
     {
-        if (!Model.CurrentState.HasFlag(EnemyControlState.OnCamera)
-            || Model.CurrentState.HasFlag(EnemyControlState.Stopped)
-            || Model.HitPoint == 0) return;
-
         //プレイヤーが左側にいるとき
         if (transform.position.x > player.transform.position.x)
         {
-            Model.Direction = -1;
-            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            _model.Direction = -1;
+            _view.FlipXImage(_model.Direction);
         }
         //プレイヤーが右側にいるとき
         else if (transform.position.x < player.transform.position.x)
         {
-            Model.Direction = 1;
-            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            _model.Direction = 1;
+            _view.FlipXImage(_model.Direction);
         }
     }
 
-    public override void StopOrder(float stopTime)
+    public async override UniTask Paralysis(float duration)
     {
-        return;
+        stateCon.AddState(EnemyState.Stopped);
+        StopAsyncTasks();
+        await UniTask.Delay(TimeSpan.FromSeconds(duration));
+        stateCon.DeleteState(EnemyState.Stopped);
+    }
+
+    public async override UniTask Knockback(Vector2 direction, float force)
+    {
+        stateCon.AddState(EnemyState.Stopped);
+        StopAsyncTasks();
+        await UniTask.Delay(TimeSpan.FromSeconds(1f));
+        stateCon.DeleteState(EnemyState.Stopped);
+    }
+
+    protected override EnemyModel CreateModel()
+    {
+       return  _model = new EnemyModel(hp, strength, defense, score, direction);
     }
 }

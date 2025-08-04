@@ -4,14 +4,14 @@ public class MagicHitContext
 {
     public WizardModel model;
     public MagicCreatorStatus magicCreator;
-    public EnemyModel enemyModel;
+    public EnemyPresenter enemy;
     public int damage;
 
-    public MagicHitContext(WizardModel model, MagicCreatorStatus magicCreator, EnemyModel enemyModel, int damage)
+    public MagicHitContext(WizardModel model, MagicCreatorStatus magicCreator, EnemyPresenter enemy, int damage)
     {
         this.model = model;
         this.magicCreator = magicCreator;
-        this.enemyModel = enemyModel;
+        this.enemy = enemy;
         this.damage = damage;
     }
 }

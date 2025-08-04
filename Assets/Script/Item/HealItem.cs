@@ -9,6 +9,7 @@ public class HealItem : MonoBehaviour
         if (collision.gameObject.TryGetComponent<WizardPresenter>(out var player))
         {
             AudioManager.Instance.PlaySE(AudioType.heal);
+            PlayDataRecorder.Instance.AddGetHaert();
             player.Heal(healPoint);
             Destroy(gameObject, 0.1f);
         }
