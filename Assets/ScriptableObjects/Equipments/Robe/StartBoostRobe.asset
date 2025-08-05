@@ -1,22 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 180e8673b5574e94c919e97342d790c3, type: 3}
-  m_Name: StartBoostRobe
-  m_EditorClassIdentifier: 
-  equipmentName: "\u5148\u99C6\u3051\u306E\u30ED\u30FC\u30D6"
-  introduceText: "\u6226\u95D8\u958B\u59CB\u304B\u3089\u4E00\u5B9A\u6642\u9593\u3001\u6301\u3061\u4E3B\u306E\u80FD\u529B\u3092\u5F15\u304D\u4E0A\u3052\u308B\u30ED\u30FC\u30D6"
-  icon: {fileID: 21300000, guid: 77a8a5622c613d643a7551726c4c1e8a, type: 3}
-  skill: {fileID: 11400000, guid: f620c4166f047224bb193e67d594deef, type: 2}
-  hitPoint: 12
-  strength: 8
-  defense: 12
-  speed: 12
+version https://git-lfs.github.com/spec/v1
+oid sha256:2407b1d42d8e1ed271a7d6e73050054ec161bd13f8fbdaf6be838284a4612d98
+size 871

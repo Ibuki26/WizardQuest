@@ -1,16 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbb731a66a0f7b949ab4b3befd467372, type: 3}
-  m_Name: Die_moster
-  m_EditorClassIdentifier: 
-  type: 15
-  audioClip: {fileID: 8300000, guid: c4b9203e0e27ad241ac9a038c2e16160, type: 3}
+version https://git-lfs.github.com/spec/v1
+oid sha256:549f4844d3b34722ef2cf3924b1420822ad6b380576e7a07cc50753d5477d70b
+size 506
