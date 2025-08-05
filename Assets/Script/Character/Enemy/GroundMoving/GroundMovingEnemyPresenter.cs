@@ -24,11 +24,10 @@ public abstract class GroundMovingEnemyPresenter : EnemyPresenter
 
         //•Ç‚â°‚ÌŠm”F
         CheckGround();
-
         if (stateCon.HasState(EnemyState.Stopped)) return;
-
         CheckGroundToTurn();
         CheckWallToTurn();
+
         //UŒ‚‚ÌˆĞ—Í‚Ìİ’è
         SetAttack();
         //ˆÚ“®

@@ -8,8 +8,9 @@ public class Boar : GroundMovingEnemyPresenter
     private EnemySightChecker esc;
 
     //Raycastの調整用数値
-    private float adjustRaycastX_turn = 0.95f;
-    private float adjustRaycastGround = 0.04f;
+    private float adjustRaycastX_turn = 0.7f;
+    private float adjustRaycastGround = 0.2f;
+    private float adjustRaycastGround_turn = 0f;
     private float adjustRaycastWall = 0.53f;
 
     public override void ManualStart()
@@ -51,7 +52,7 @@ public class Boar : GroundMovingEnemyPresenter
 
     protected override void CheckGround()
     {
-        var adjustPosition = new Vector2(transform.position.x, transform.position.y - adjustRaycastGround);
+        var adjustPosition = new Vector2(transform.position.x, transform.position.y + adjustRaycastGround);
         //地面と接しているとき
         if (RaycastHelper.CheckGroundAndWalls(adjustPosition, Vector2.down, 0.05f, Color.red))
         {
@@ -73,15 +74,24 @@ public class Boar : GroundMovingEnemyPresenter
         var adjustPosition_x = transform.position.x + adjustRaycastX_turn * GroundModel.Direction;
         var adjustPosition_y = transform.position.y - adjustRaycastGround;
         //地面とあるとき
-        if (RaycastHelper.CheckGroundAndWalls(new Vector2(adjustPosition_x, adjustPosition_y), Vector2.down, 0.1f, Color.red))
+        var bs = RaycastHelper.CheckGroundAndWallsBS(new Vector2(adjustPosition_x, adjustPosition_y), Vector2.down, 0.1f, Color.red);
+        if (bs.flag)
         {
             return;
         }
 
+        //視界にプレイヤーがいるときの挙動のとき、それを解除
+        if (stateCon.HasState(EnemyState.Moving))
+        {
+            StopAsyncTasks();
+            stateCon.DeleteState(EnemyState.Moving);
+        }
         //地面が無いとき
         GroundModel.Direction *= -1;
         //向きの調整
         _view.FlipXImage(GroundModel.Direction);
+        Debug.Log("not ground");
+        Debug.Log(bs.name);
         return;
     }
 
@@ -94,11 +104,20 @@ public class Boar : GroundMovingEnemyPresenter
         var adjustPosition_y = transform.position.y + adjustRaycastWall;
         var direction = new Vector2(GroundModel.Direction, 0);
         //壁があるとき
-        if (RaycastHelper.CheckGroundAndWalls(new Vector2(adjustPosition_x, adjustPosition_y), direction, 0.1f, Color.red))
+        var bs = RaycastHelper.CheckGroundAndWallsBS(new Vector2(adjustPosition_x, adjustPosition_y), direction, 0.1f, Color.red);
+        if (bs.flag)
         {
+            //視界にプレイヤーがいるときの挙動のとき、それを解除
+            if (stateCon.HasState(EnemyState.Moving))
+            {
+                StopAsyncTasks();
+                stateCon.DeleteState(EnemyState.Moving);
+            }
             GroundModel.Direction *= -1;
             //向きの調整
             _view.FlipXImage(GroundModel.Direction);
+            Debug.Log("not wall");
+            Debug.Log(bs.name);
         }
 
         //壁がないときは何もしない

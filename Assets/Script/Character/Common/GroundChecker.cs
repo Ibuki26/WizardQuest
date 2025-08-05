@@ -8,7 +8,7 @@ public class GroundChecker : MonoBehaviour
     public bool IsGround(float adjustRaycast_y)
     {
         hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - adjustRaycast_y), Vector2.down, 0.01f);
-        Debug.DrawRay(new Vector2(transform.position.x, transform.position.y - adjustRaycast_y), Vector2.down * 0.01f, Color.red);
+        //Debug.DrawRay(new Vector2(transform.position.x, transform.position.y - adjustRaycast_y), Vector2.down * 0.01f, Color.red);
         //ínñ Ç∆ê⁄ÇµÇƒÇ¢ÇÈÇ∆Ç´
         if (hit.collider != null && !hit.collider.isTrigger)
         {

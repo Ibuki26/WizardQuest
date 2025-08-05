@@ -66,7 +66,6 @@ public class WizardPresenter : MonoBehaviour
 
     public void ManualFixedUpdate()
     {
-        Debug.DrawLine(transform.position, transform.position + new Vector3(0, 0.7f, 0), Color.yellow, 1f);
         //ínñ ÇÃê⁄ínîªíË
         IsGround();
         AdjustVelocity_y();
