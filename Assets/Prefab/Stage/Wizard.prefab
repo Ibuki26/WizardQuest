@@ -15,7 +15,9 @@ GameObject:
   - component: {fileID: 2582352264805320763}
   - component: {fileID: 8578427189659286530}
   - component: {fileID: 2303214828279513859}
-  - component: {fileID: 6751359839643576781}
+  - component: {fileID: 69144891515296381}
+  - component: {fileID: 7570442556107276104}
+  - component: {fileID: 9127263349555809799}
   m_Layer: 7
   m_Name: Wizard
   m_TagString: Untagged
@@ -76,9 +78,9 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 6200000, guid: c35d3d103462500448f8bb2524c96f27, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -137,7 +139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: 0e17c2d0e82ae8f43a866cff8691a531, type: 3}
-  m_NotificationBehavior: 2
+  m_NotificationBehavior: 3
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -308,9 +310,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: b0d18e1be2693334ebbcd738d05912ea, type: 2}
   buffEffecter: {fileID: 6087292721003485135}
-  gameOverWindow: {fileID: 0}
-  button: {fileID: 0}
---- !u!114 &6751359839643576781
+--- !u!114 &69144891515296381
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -319,7 +319,39 @@ MonoBehaviour:
   m_GameObject: {fileID: 924714849685591776}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13b0ce827c1c63147ba782fd5796c22c, type: 3}
+  m_Script: {fileID: 11500000, guid: a021b50a83c81ea4ead64a3ae3244278, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7570442556107276104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 924714849685591776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe3d58e106de8e049bdb72398151f45e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onCeiling: 1
+  groundedLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  raycastDistance: 0.09
+  raycastDistanceWall: 0
+  groundedRaycastAdjust_y: 0.11
+  nextGroundedRaycastAdjust_x: 0
+--- !u!114 &9127263349555809799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 924714849685591776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fd2e280d2eca554497bb697651d6bc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3019771522296061235

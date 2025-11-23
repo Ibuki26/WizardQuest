@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4700428349904474660}
   - component: {fileID: 4747313763711650725}
   - component: {fileID: 7747212579961939196}
-  - component: {fileID: 5235009222950045266}
+  - component: {fileID: 2523832826371068375}
   m_Layer: 6
   m_Name: Ghost
   m_TagString: Untagged
@@ -75,9 +75,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingLayerID: 1752812663
+  m_SortingLayer: 3
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 25aff8b48fb4a2544a6254ddeed13e99, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -176,15 +176,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca64ba9659caeee4fb813a160614f172, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 55
-  strength: 30
+  hp: 50
+  strength: 48
   defense: 40
   score: 250
   direction: -1
   speed: 3
   moveTime: 1
   onVertical: 0
---- !u!114 &5235009222950045266
+--- !u!114 &2523832826371068375
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -193,6 +193,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 7461204365738858835}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3aed48e7fb94a1241bfe32aa231c0aaa, type: 3}
+  m_Script: {fileID: 11500000, guid: 8fd2e280d2eca554497bb697651d6bc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
