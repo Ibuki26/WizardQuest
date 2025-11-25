@@ -93,6 +93,17 @@ public class Wizard : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.TryGetComponent<StageArea>(out var stage))
+        {
+            if (stage.num <= stageNum)
+            {
+                agent.AddReward(-0.001f);
+            }
+        }
+    }
+
     public void OnMove(float xAxis)
     {
         _movement.XAxis = xAxis;

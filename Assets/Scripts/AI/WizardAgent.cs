@@ -18,6 +18,11 @@ public class WizardAgent : Agent
         wizard.Agent = this;
     }
 
+    public override void OnEpisodeBegin()
+    {
+        wizard.ResetWizard();
+    }
+
     public override void CollectObservations(VectorSensor sensor)
     {
         sensor.AddObservation(wizard.StageNum);

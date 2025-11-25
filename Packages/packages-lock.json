@@ -211,7 +211,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ml-agents": {
-      "version": "file:C:/Users/tksib/ml-agents-release_19/com.unity.ml-agents",
+      "version": "file:C:/Users/user/ml-agents-release_19/com.unity.ml-agents",
       "depth": 0,
       "source": "local",
       "dependencies": {
