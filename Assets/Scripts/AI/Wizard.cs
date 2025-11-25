@@ -119,6 +119,7 @@ public class Wizard : MonoBehaviour
         _model.Direction = (xAxis > 0) ? 1 : -1;
         _view.FlipX(_model.Direction);
 
+        agent.AddReward(0.001f);
         _view.SetAnimation("isRun", true);
     }
 
