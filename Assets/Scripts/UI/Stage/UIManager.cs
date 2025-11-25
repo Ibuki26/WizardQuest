@@ -29,14 +29,6 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
         hitPointBar.ManualStart(player.Model);
     }
 
-    public void ManualStart(Wizard agent)
-    {
-        score.ManualStart();
-        coolTimeIcons[0].ManualStart();
-        coolTimeIcons[1].ManualStart();
-        hitPointBar.ManualStart(agent.Model);
-    }
-
     //ÉXÉRÉAÇÃâ¡éZ
     public void AddScore(int addScore)
     {

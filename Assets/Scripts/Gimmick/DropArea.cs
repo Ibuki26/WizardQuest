@@ -17,11 +17,6 @@ public class DropArea : MonoBehaviour
             player.DamageFromGimmick(damage).Forget();
         }
 
-        if(collision.gameObject.TryGetComponent<Wizard>(out var wizard))
-        {
-            wizard.transform.position = pos;
-        }
-
         if (collision.gameObject.TryGetComponent<EnemyPresenter>(out var enemy))
         {
             //スコアの加点とEnemyの破棄
