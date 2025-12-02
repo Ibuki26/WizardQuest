@@ -4,6 +4,7 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
+using Unity.VisualScripting;
 
 public class Wizard : MonoBehaviour
 {
@@ -15,14 +16,24 @@ public class Wizard : MonoBehaviour
     private FlagsController<WizardState> _stateCon;
     private WizardMovement _movement;
     private CharacterRaycaster _raycaster;
-
     private Vector3 startPoint;
-    private int stageNum = 0;
     private WizardAgent agent;
+
+    private int stageNum = 0;
+    private int countDrop = 0;
+    private int countLowStage = 0;
 
     public WizardModel Model => _model;
 
     public int StageNum => stageNum;
+
+    public Vector3 StartPoint => startPoint;
+
+    public int CountDrop => countDrop;
+
+    public int CountLowStage => countLowStage;
+
+    public Rigidbody2D Rigidbody => _rb2d;
 
     public WizardAgent Agent 
     { 
@@ -46,6 +57,8 @@ public class Wizard : MonoBehaviour
 
         startPoint = transform.position;
         stageNum = 0;
+        countDrop = 0;
+        countLowStage = 0;
         //装備のステータス適応はとりあえず後で
     }
 
@@ -57,6 +70,8 @@ public class Wizard : MonoBehaviour
         transform.position = startPoint;
         _view.FlipX(1);
         stageNum = 0;
+        countDrop = 0;
+        countLowStage = 0;
         //CharacterRaycasterクラスなどの制御クラスのリセットは後で
     }
 
@@ -75,14 +90,21 @@ public class Wizard : MonoBehaviour
         if (collision.gameObject.TryGetComponent<StageArea>(out var stage))
         {
             if (stage.num > stageNum)
-                agent.AddReward(0.1f);
-            else
-                agent.AddReward(-0.1f);
+            {
+                stageNum = stage.num;
+                agent.AddReward(0.07f);
+            }
+            else if (stage.num < stageNum)
+            {
+                agent.AddReward(-0.01f);
+                
+            }
         }
 
         if (collision.gameObject.TryGetComponent<DropArea>(out _))
         {
-            agent.AddReward(-0.1f);
+            agent.AddReward(-0.001f);
+            countDrop++;
         }
 
         if (collision.gameObject.TryGetComponent<GoalFlag>(out _))
@@ -93,13 +115,25 @@ public class Wizard : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.TryGetComponent<StageArea>(out var stage))
+        if(collision.gameObject.TryGetComponent<Scaffold>(out var scaffold))
         {
-            if (stage.num <= stageNum)
+            if (!scaffold.touchChecker && scaffold.transform.position.y < transform.position.y)
             {
-                agent.AddReward(-0.001f);
+                agent.AddReward(0.0216f);
+                scaffold.touchChecker = true;
+            }
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.TryGetComponent<Scaffold>(out var scaffold))
+        {
+            if (scaffold.transform.position.y > transform.position.y)
+            {
+                agent.AddReward(-0.005f);
             }
         }
     }
@@ -119,13 +153,12 @@ public class Wizard : MonoBehaviour
         _model.Direction = (xAxis > 0) ? 1 : -1;
         _view.FlipX(_model.Direction);
 
-        agent.AddReward(0.001f);
         _view.SetAnimation("isRun", true);
     }
 
-    public void OnJump(bool pushJump)
+    public void OnJump(int jumpButtonPhase)
     {
-        if (_stateCon.HasState(WizardState.Standing) && pushJump
+        if (_stateCon.HasState(WizardState.Standing) && jumpButtonPhase == 1
             && !_stateCon.HasState(WizardState.Jumping))
         {
             //ジャンプを始める処理
@@ -135,7 +168,7 @@ public class Wizard : MonoBehaviour
             _stateCon.AddState(WizardState.Jumping);
             _movement.PushJumpButton = true;
         }
-        if (!pushJump && _stateCon.HasState(WizardState.Jumping))
+        if (jumpButtonPhase == 0 && _stateCon.HasState(WizardState.Jumping))
         {
             _movement.PushJumpButton = false;
             _view.SetAnimation("isJump", false);

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5794404585008292944}
   - component: {fileID: 6817378444783740596}
   - component: {fileID: 5379571274144521331}
+  - component: {fileID: 4834288504639401817}
   m_Layer: 8
   m_Name: FallthroughPlatform
   m_TagString: Untagged
@@ -113,6 +114,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3dfba3b17b5a6c4090272e3d8a9113e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4834288504639401817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345004150821043533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4435806c68fa00a45bb9418739c7eb33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  touchChecker: 0
 --- !u!1 &6970718629113401411
 GameObject:
   m_ObjectHideFlags: 0

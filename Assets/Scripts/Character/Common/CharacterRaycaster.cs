@@ -143,7 +143,7 @@ public class CharacterRaycaster : MonoBehaviour
         {
             int count = Physics2D.Raycast(raycastPositions[i], raycastDirection, contactFilter, hitBuffers, raycastDistance);
 
-            if (count != 0)
+            if (count != 0 && hitBuffers[0].normal.y > 0.5f)
             {
                 //hitBuffers‚Ì‰Šú‰»
                 for (int j = 0; j < hitBuffers.Length; j++)
@@ -214,7 +214,7 @@ public class CharacterRaycaster : MonoBehaviour
 
         Debug.DrawRay(raycasterStart, raycastDirection * raycastDistance, Color.red, 1f);
 
-        if(count != 0)
+        if(count != 0 && hitBuffers[0].normal.y > 0.5f)
         {
             //hitBuffers‚Ì‰Šú‰»
             for (int j = 0; j < hitBuffers.Length; j++)
@@ -256,7 +256,7 @@ public class CharacterRaycaster : MonoBehaviour
         return isNextGrounded;
     }
 
-    /*
+    
     private void OnDrawGizmosSelected()
     {
         var capsule = GetComponent<CapsuleCollider2D>();
@@ -341,5 +341,5 @@ public class CharacterRaycaster : MonoBehaviour
 
         Handles.color = Color.white;
     }
-    */
+    
 }
